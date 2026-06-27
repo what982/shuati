@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>刷题系统</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js">
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* ===== 完整样式（与原文件完全一致） ===== */
+        /* ===== 完整样式（与你的原文件完全一致，未改动） ===== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -1260,7 +1260,7 @@
     </style>
 </head>
 <body>
-    <!-- ===== HTML 结构（与原文件完全一致） ===== -->
+    <!-- ===== HTML 结构（与你原有结构完全一致） ===== -->
     <div class="container">
         <h1><span>📚 刷题系统</span><span style="font-size:16px;font-weight:normal;" id="modeLabel">全部题目</span></h1>
         <div class="toolbar" id="toolbar">
@@ -1400,7 +1400,7 @@
         let imgbbApiKey = '';
 
         // ============================================================
-        // 2. 工具函数（与原文件完全一致）
+        // 2. 工具函数
         // ============================================================
         function showToast(message, type = 'info', duration = 2000) {
         const container = document.getElementById('toastContainer');
@@ -1441,7 +1441,7 @@
         }
 
         // ============================================================
-        // 3. 存储管理（与原文件完全一致）
+        // 3. 存储管理
         // ============================================================
         function saveLibraries() {
         try {
@@ -1527,7 +1527,7 @@
         }
 
         // ============================================================
-        // 4. 折叠、章节、弹窗（与原文件完全一致）
+        // 4. 折叠、章节、弹窗
         // ============================================================
         function toggleLibraryArea() {
         libraryAreaCollapsed = !libraryAreaCollapsed;
@@ -1605,7 +1605,7 @@
         }
 
         // ============================================================
-        // 5. 题目增删改（与原文件完全一致）
+        // 5. 题目增删改
         // ============================================================
         function toggleOptions() {
         document.getElementById('optionsGroup').style.display = (document.getElementById('qType').value === 'short') ?
@@ -1712,7 +1712,7 @@
         }
 
         // ============================================================
-        // 6. 重命名 & 批量删除（与原文件完全一致）
+        // 6. 重命名 & 批量删除
         // ============================================================
         function renameLibrary(oldName) {
         if (event && event.stopPropagation) event.stopPropagation();
@@ -1790,7 +1790,7 @@
         }
 
         // ============================================================
-        // 7. 核心渲染（与原文件完全一致）
+        // 7. 核心渲染
         // ============================================================
         function render() {
         const container = document.getElementById('questionContainer');
@@ -2146,7 +2146,7 @@
         }
 
         // ============================================================
-        // 8. 报告（与原文件完全一致）
+        // 8. 报告
         // ============================================================
         function showReport() {
         document.getElementById('reportModal').style.display = 'flex';
@@ -2217,7 +2217,7 @@
         function closeReport() { document.getElementById('reportModal').style.display = 'none'; }
 
         // ============================================================
-        // 9. 进度导入导出（与原文件完全一致）
+        // 9. 进度导入导出
         // ============================================================
         function exportCurrentProgress() {
         const data = { libraryName: currentLibrary, exportTime: new Date().toISOString(), userAnswers, modifiedData,
@@ -2275,7 +2275,7 @@
         }
 
         // ============================================================
-        // 10. 切换题库 & 删除题库（与原文件完全一致）
+        // 10. 切换题库 & 删除题库
         // ============================================================
         function switchLibrary(name) {
         if (name === currentLibrary) return;
@@ -2301,7 +2301,7 @@
         }
 
         // ============================================================
-        // 11. 题库列表渲染（与原文件完全一致）
+        // 11. 题库列表渲染
         // ============================================================
         function renderLibraryList() {
         const list = document.getElementById('libraryList');
@@ -2345,7 +2345,7 @@
         }
 
         // ============================================================
-        // 12. 上传 TXT / Word（与原文件完全一致）
+        // 12. 上传 TXT / Word
         // ============================================================
         function dataURItoBlob(dataURI) {
         const byteString = atob(dataURI.split(',')[1]);
@@ -2596,7 +2596,7 @@
         }
 
         // ============================================================
-        // 13. 示例加载（与原文件完全一致）
+        // 13. 示例加载
         // ============================================================
         function loadSample() {
         const libName = '示例题库';
@@ -2634,7 +2634,7 @@
         }
 
         // ============================================================
-        // 14. 解析函数（与原文件完全一致）
+        // 14. 解析函数
         // ============================================================
         function parseFullText(text) {
         const typeRules = [
@@ -2778,7 +2778,7 @@
         }
 
         // ============================================================
-        // 15. 导出/导入所有题库（与原文件完全一致）
+        // 15. 导出/导入所有题库
         // ============================================================
         function exportAllLibraries() {
         const data = { version: '1.0', exportTime: new Date().toISOString(), libraries: libraries };
@@ -2831,7 +2831,7 @@
         }
 
         // ============================================================
-        // 16. 调试（与原文件完全一致）
+        // 16. 调试
         // ============================================================
         function toggleDebug() {
         const area = document.getElementById('debugArea');
@@ -2860,7 +2860,7 @@
         }
 
         // ============================================================
-        // 17. 图床相关（与原文件完全一致）
+        // 17. 图床相关
         // ============================================================
         function setImgbbApiKey() {
         const currentKey = imgbbApiKey || '';
@@ -3017,10 +3017,8 @@
         }
 
         // ============================================================
-        // ★★★ 以下为云端同步模块（WebDAV，纯 fetch）★★★
+        // ★★★ 通用数据打包/应用函数（供云端同步使用）★★★
         // ============================================================
-
-        // --- 通用数据打包/应用函数（独立于同步方式）---
         function getSyncData() {
         const libsForSync = {};
         for (let name in libraries) {
@@ -3078,71 +3076,69 @@
         return true;
         }
 
-        // --- WebDAV 配置 ---
-        let webdavConfig = {
-        username: '',
-        password: '',
-        url: 'https://dav.jianguoyun.com/dav/'
-        };
-        const WEBDAV_FILE = 'shuati_data.json';
+        // ============================================================
+        // ★★★ Supabase 云端同步模块 ★★★
+        // ============================================================
 
-        function loadWebDAVConfig() {
-        webdavConfig.username = safeGetStorage('webdav_username', '');
-        webdavConfig.password = safeGetStorage('webdav_password', '');
-        }
+        let supabaseClient = null;
+        let supabaseConfig = { url: '', anonKey: '' };
 
-        function saveWebDAVConfig(username, password) {
-        webdavConfig.username = username;
-        webdavConfig.password = password;
-        safeSetStorage('webdav_username', username);
-        safeSetStorage('webdav_password', password);
-        showToast('WebDAV 配置已保存', 'success');
-        }
-
-        // --- WebDAV 请求（纯 fetch）---
-        async function webdavRequest(method, path, body = null) {
-        const url = webdavConfig.url + path;
-        const headers = {
-        'Authorization': 'Basic ' + btoa(webdavConfig.username + ':' + webdavConfig.password),
-        'Content-Type': 'application/json'
-        };
-        const options = {
-        method: method,
-        headers: headers,
-        credentials: 'include'
-        };
-        if (body) options.body = body;
-        const response = await fetch(url, options);
-        return response;
-        }
-
-        async function webdavExists(path) {
+        function loadSupabaseConfig() {
+        supabaseConfig.url = safeGetStorage('supabase_url', '');
+        supabaseConfig.anonKey = safeGetStorage('supabase_anonKey', '');
+        if (supabaseConfig.url && supabaseConfig.anonKey) {
         try {
-        const response = await webdavRequest('PROPFIND', path);
-        return response.status === 207;
-        } catch (e) {
-        return false;
+        supabaseClient = window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey);
+        } catch (e) { console.warn('Supabase 初始化失败', e); }
         }
         }
 
-        // --- 上传/下载操作 ---
-        async function uploadToWebDAV() {
-        if (!webdavConfig.username || !webdavConfig.password) {
-        showToast('请先配置 WebDAV（点击 "☁️ WebDAV配置"）', 'warning');
+        function saveSupabaseConfig(url, anonKey) {
+        supabaseConfig.url = url;
+        supabaseConfig.anonKey = anonKey;
+        safeSetStorage('supabase_url', url);
+        safeSetStorage('supabase_anonKey', anonKey);
+        try {
+        supabaseClient = window.supabase.createClient(url, anonKey);
+        } catch (e) { showToast('配置无效，请检查 URL 和 Key', 'error'); return; }
+        showToast('Supabase 配置已保存', 'success');
+        }
+
+        function configSupabase() {
+        const url = prompt('请输入 Supabase Project URL（例如 https://xxxxx.supabase.co）：', supabaseConfig.url || '');
+        if (url === null) return;
+        const anonKey = prompt('请输入 Supabase anon public 密钥：', supabaseConfig.anonKey || '');
+        if (anonKey === null) return;
+        const trimmedUrl = url.trim();
+        const trimmedKey = anonKey.trim();
+        if (trimmedUrl && trimmedKey) {
+        saveSupabaseConfig(trimmedUrl, trimmedKey);
+        } else {
+        showToast('URL 和 Key 不能为空', 'error');
+        }
+        }
+
+        async function uploadToSupabase() {
+        if (!supabaseClient) {
+        showToast('请先配置 Supabase（点击 "☁️ Supabase配置"）', 'warning');
         return;
         }
         showLoading();
         try {
         const data = getSyncData();
-        const jsonStr = JSON.stringify(data, null, 2);
-        const response = await webdavRequest('PUT', WEBDAV_FILE, jsonStr);
-        if (response.status === 201 || response.status === 204) {
-        showToast('☁️ 数据已上传到坚果云！', 'success');
+        const libraryName = data.currentLibrary || '默认题库';
+        const { error } = await supabaseClient
+        .from('shuati_user_data')
+        .upsert({
+        user_id: 'default_user',
+        library_name: libraryName,
+        data: data,
+        updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id, library_name' });
+
+        if (error) throw error;
+        showToast('☁️ 数据已同步到 Supabase！', 'success');
         document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
-        } else {
-        const text = await response.text();
-        throw new Error('上传失败 (HTTP ' + response.status + '): ' + text);
-        }
         } catch (err) {
         showToast('上传失败：' + err.message, 'error', 4000);
         console.error(err);
@@ -3151,30 +3147,40 @@
         }
         }
 
-        async function downloadFromWebDAV() {
-        if (!webdavConfig.username || !webdavConfig.password) {
-        showToast('请先配置 WebDAV', 'warning');
+        async function downloadFromSupabase() {
+        if (!supabaseClient) {
+        showToast('请先配置 Supabase', 'warning');
         return;
         }
         showLoading();
         try {
-        const exists = await webdavExists(WEBDAV_FILE);
-        if (!exists) {
+        const libraryName = currentLibrary || '默认题库';
+        const { data, error } = await supabaseClient
+        .from('shuati_user_data')
+        .select('data')
+        .eq('user_id', 'default_user')
+        .eq('library_name', libraryName)
+        .single();
+
+        if (error) {
+        if (error.code === 'PGRST116') {
+        showToast('云端暂无数据，请先上传', 'warning');
+        } else {
+        throw error;
+        }
+        return;
+        }
+        if (!data) {
         showToast('云端暂无数据，请先上传', 'warning');
         return;
         }
-        const response = await webdavRequest('GET', WEBDAV_FILE);
-        if (response.status === 200) {
-        const jsonStr = await response.text();
-        const data = JSON.parse(jsonStr);
+
         const confirm = await showConfirm('从云端恢复', '将用云端数据覆盖当前所有本地数据，确定继续吗？');
         if (!confirm) return;
-        applySyncData(data);
-        showToast('☁️ 数据已从坚果云恢复！', 'success');
+
+        applySyncData(data.data);
+        showToast('☁️ 数据已从 Supabase 恢复！', 'success');
         document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
-        } else {
-        throw new Error('下载失败 (HTTP ' + response.status + ')');
-        }
         } catch (err) {
         showToast('下载失败：' + err.message, 'error', 4000);
         console.error(err);
@@ -3183,27 +3189,12 @@
         }
         }
 
-        // --- 配置界面 ---
-        function configWebDAV() {
-        const username = prompt('请输入坚果云 WebDAV 用户名（通常是邮箱）：', webdavConfig.username || '');
-        if (username === null) return;
-        const password = prompt('请输入坚果云应用密码（非登录密码）：', '');
-        if (password === null) return;
-        const trimmedUser = username.trim();
-        const trimmedPass = password.trim();
-        if (trimmedUser && trimmedPass) {
-        saveWebDAVConfig(trimmedUser, trimmedPass);
-        } else {
-        showToast('用户名和密码不能为空', 'error');
-        }
-        }
-
-        // --- 自动同步（加载时下载，关闭时上传）---
+        // --- 自动同步 ---
         let autoSyncEnabled = true;
         let isFirstLoad = true;
 
         function loadAutoSyncSetting() {
-        const val = safeGetStorage('webdav_autoSync', 'true');
+        const val = safeGetStorage('supabase_autoSync', 'true');
         autoSyncEnabled = (val === 'true');
         const toggle = document.getElementById('autoSyncToggle');
         if (toggle) toggle.checked = autoSyncEnabled;
@@ -3211,51 +3202,56 @@
 
         async function autoDownloadOnLoad() {
         if (!autoSyncEnabled) return;
-        if (!webdavConfig.username || !webdavConfig.password) return;
+        if (!supabaseClient) return;
         if (!isFirstLoad) return;
         isFirstLoad = false;
         try {
-        const exists = await webdavExists(WEBDAV_FILE);
-        if (exists) {
-        const response = await webdavRequest('GET', WEBDAV_FILE);
-        if (response.status === 200) {
-        const jsonStr = await response.text();
-        const data = JSON.parse(jsonStr);
-        if (data && data.libraries) {
-        applySyncData(data);
+        const libraryName = currentLibrary || '默认题库';
+        const { data, error } = await supabaseClient
+        .from('shuati_user_data')
+        .select('data')
+        .eq('user_id', 'default_user')
+        .eq('library_name', libraryName)
+        .single();
+        if (error) {
+        if (error.code !== 'PGRST116') console.warn('自动下载出错', error);
+        return;
+        }
+        if (data && data.data) {
+        applySyncData(data.data);
         showToast('☁️ 已自动同步云端数据', 'info', 2000);
-        document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date()
-        .toLocaleString();
+        document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
         }
-        }
-        }
-        } catch (e) {
-        console.warn('自动下载失败，忽略', e);
-        }
+        } catch (e) { console.warn('自动下载失败', e); }
         }
 
         async function autoUploadOnUnload() {
         if (!autoSyncEnabled) return;
-        if (!webdavConfig.username || !webdavConfig.password) return;
+        if (!supabaseClient) return;
         try {
         const data = getSyncData();
-        const jsonStr = JSON.stringify(data, null, 2);
-        await webdavRequest('PUT', WEBDAV_FILE, jsonStr);
+        const libraryName = data.currentLibrary || '默认题库';
+        await supabaseClient
+        .from('shuati_user_data')
+        .upsert({
+        user_id: 'default_user',
+        library_name: libraryName,
+        data: data,
+        updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id, library_name' });
         console.log('自动上传成功');
-        } catch (e) {
-        console.warn('自动上传失败', e);
-        }
+        } catch (e) { console.warn('自动上传失败', e); }
         }
 
         // --- 注入 UI ---
-        function injectWebDAVUI() {
+        function injectSupabaseUI() {
         const toolbar = document.getElementById('toolbar');
         if (!toolbar) return;
 
         const configBtn = document.createElement('button');
         configBtn.className = 'btn btn-secondary';
-        configBtn.innerHTML = '☁️ WebDAV配置';
-        configBtn.onclick = configWebDAV;
+        configBtn.innerHTML = '☁️ Supabase配置';
+        configBtn.onclick = configSupabase;
         toolbar.appendChild(configBtn);
 
         const syncGroup = document.createElement('span');
@@ -3264,13 +3260,13 @@
         const uploadBtn = document.createElement('button');
         uploadBtn.className = 'btn btn-sm btn-success';
         uploadBtn.textContent = '⬆️ 上传';
-        uploadBtn.onclick = uploadToWebDAV;
+        uploadBtn.onclick = uploadToSupabase;
         syncGroup.appendChild(uploadBtn);
 
         const downloadBtn = document.createElement('button');
         downloadBtn.className = 'btn btn-sm btn-warning';
         downloadBtn.textContent = '⬇️ 下载';
-        downloadBtn.onclick = downloadFromWebDAV;
+        downloadBtn.onclick = downloadFromSupabase;
         syncGroup.appendChild(downloadBtn);
 
         const autoLabel = document.createElement('label');
@@ -3281,7 +3277,7 @@
         autoCheck.checked = autoSyncEnabled;
         autoCheck.onchange = function() {
         autoSyncEnabled = this.checked;
-        safeSetStorage('webdav_autoSync', autoSyncEnabled ? 'true' : 'false');
+        safeSetStorage('supabase_autoSync', autoSyncEnabled ? 'true' : 'false');
         showToast(autoSyncEnabled ? '自动同步已开启' : '自动同步已关闭', 'info');
         };
         autoLabel.appendChild(autoCheck);
@@ -3298,9 +3294,9 @@
         }
 
         // ============================================================
-        // 18. 初始化（保留原有 + 新增 WebDAV）
+        // 18. 初始化
         // ============================================================
-        // 保存原有的 onload
+        // 保存原有 onload 以避免覆盖
         const originalOnload = window.onload;
 
         window.onload = function() {
@@ -3326,12 +3322,12 @@
         window.addEventListener('resize', updatePosition);
         }
 
-        // 2. 加载 WebDAV 配置和自动同步设置
-        loadWebDAVConfig();
+        // 2. 加载 Supabase 配置和自动同步设置
+        loadSupabaseConfig();
         loadAutoSyncSetting();
 
-        // 3. 注入 WebDAV UI（按钮）
-        injectWebDAVUI();
+        // 3. 注入 Supabase UI
+        injectSupabaseUI();
 
         // 4. 自动下载（如果开启且首次加载）
         if (autoSyncEnabled) {
