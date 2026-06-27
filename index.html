@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>刷题系统</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js">
+    </script>
     <style>
-        /* ===== 完整样式（与你的原文件完全一致，未改动） ===== */
+        /* ===== 完整样式（与原文件完全一致，未改动） ===== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -1260,7 +1260,7 @@
     </style>
 </head>
 <body>
-    <!-- ===== HTML 结构（与你原有结构完全一致） ===== -->
+    <!-- ===== HTML 结构（与原文件完全一致） ===== -->
     <div class="container">
         <h1><span>📚 刷题系统</span><span style="font-size:16px;font-weight:normal;" id="modeLabel">全部题目</span></h1>
         <div class="toolbar" id="toolbar">
@@ -1350,6 +1350,25 @@
             <div class="modal-buttons">
                 <button class="cancel-btn" onclick="closeApiKeyModal()">取消</button>
                 <button class="confirm-btn" onclick="saveApiKey()">保存</button>
+            </div>
+        </div>
+    </div>
+    <!-- 新增：Supabase 配置模态框 -->
+    <div class="modal-overlay" id="supabaseConfigModal">
+        <div class="modal-box">
+            <h3>☁️ Supabase 配置</h3>
+            <p style="margin-bottom:12px;">请输入你的 Supabase 项目 URL 和 Anon 公钥。</p>
+            <div class="form-group">
+                <label>Project URL</label>
+                <input type="text" id="supabaseUrlInput" placeholder="例如 https://xxxxx.supabase.co" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;">
+            </div>
+            <div class="form-group">
+                <label>Anon Public Key</label>
+                <input type="text" id="supabaseAnonInput" placeholder="粘贴你的 publishable key..." style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;">
+            </div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="closeSupabaseConfig()">取消</button>
+                <button class="confirm-btn" onclick="saveSupabaseConfigFromModal()">保存</button>
             </div>
         </div>
     </div>
@@ -3019,51 +3038,52 @@
         // ============================================================
         // ★★★ 通用数据打包/应用函数（供云端同步使用）★★★
         // ============================================================
-        function getSyncData() {
+        function getSyncDataForLibrary(libName) {
+        const lib = libraries[libName];
+        if (!lib) {
+        return {
+        version: '1.0',
+        timestamp: new Date().toISOString(),
+        currentLibrary: libName,
+        libraryAreaCollapsed: libraryAreaCollapsed,
+        libraries: {}
+        };
+        }
         const libsForSync = {};
-        for (let name in libraries) {
-        const lib = libraries[name];
-        libsForSync[name] = {
+        libsForSync[libName] = {
         questions: lib.questions || [],
         userAnswers: lib.userAnswers || {},
         modifiedData: lib.modifiedData || {},
         wrongQuestions: Array.from(lib.wrongQuestions || [])
         };
-        }
         return {
         version: '1.0',
         timestamp: new Date().toISOString(),
-        currentLibrary: currentLibrary,
+        currentLibrary: libName,
         libraryAreaCollapsed: libraryAreaCollapsed,
         libraries: libsForSync
         };
         }
 
-        function applySyncData(data) {
-        if (!data || !data.libraries) return false;
-        const newLibs = {};
-        for (let name in data.libraries) {
-        const lib = data.libraries[name];
-        newLibs[name] = {
-        questions: lib.questions || [],
-        userAnswers: lib.userAnswers || {},
-        modifiedData: lib.modifiedData || {},
-        wrongQuestions: new Set(lib.wrongQuestions || [])
-        };
+        function applySyncDataForLibrary(libName, data) {
+        if (!data || !data.libraries || !data.libraries[libName]) return false;
+        const remoteLib = data.libraries[libName];
+        if (!libraries[libName]) {
+        libraries[libName] = { questions: [], userAnswers: {}, modifiedData: {}, wrongQuestions: new Set() };
         }
-        libraries = newLibs;
-        if (data.currentLibrary && libraries[data.currentLibrary]) {
-        currentLibrary = data.currentLibrary;
-        } else {
-        currentLibrary = Object.keys(libraries)[0] || '默认题库';
-        }
+        libraries[libName].questions = remoteLib.questions || [];
+        libraries[libName].userAnswers = remoteLib.userAnswers || {};
+        libraries[libName].modifiedData = remoteLib.modifiedData || {};
+        libraries[libName].wrongQuestions = new Set(remoteLib.wrongQuestions || []);
         if (data.libraryAreaCollapsed !== undefined) {
         libraryAreaCollapsed = data.libraryAreaCollapsed;
         }
+        // 如果当前题库正是这个，重新加载并渲染
+        if (libName === currentLibrary) {
         loadCurrentLibrary();
-        saveLibraries();
         render();
         renderLibraryList();
+        // 恢复折叠状态
         const body = document.getElementById('libraryAreaBody');
         const icon = document.getElementById('libraryToggleIcon');
         if (libraryAreaCollapsed) {
@@ -3073,70 +3093,85 @@
         body.classList.remove('collapsed');
         icon.classList.remove('collapsed');
         }
+        } else {
+        saveLibraries();
+        }
         return true;
         }
 
         // ============================================================
-        // ★★★ Supabase 云端同步模块 ★★★
+        // ★★★ Supabase 云端同步模块（原生 fetch，只同步当前题库）★★★
         // ============================================================
 
-        let supabaseClient = null;
         let supabaseConfig = { url: '', anonKey: '' };
 
         function loadSupabaseConfig() {
         supabaseConfig.url = safeGetStorage('supabase_url', '');
         supabaseConfig.anonKey = safeGetStorage('supabase_anonKey', '');
-        if (supabaseConfig.url && supabaseConfig.anonKey) {
-        try {
-        supabaseClient = window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey);
-        } catch (e) { console.warn('Supabase 初始化失败', e); }
         }
-        }
+        loadSupabaseConfig();
 
         function saveSupabaseConfig(url, anonKey) {
         supabaseConfig.url = url;
         supabaseConfig.anonKey = anonKey;
         safeSetStorage('supabase_url', url);
         safeSetStorage('supabase_anonKey', anonKey);
-        try {
-        supabaseClient = window.supabase.createClient(url, anonKey);
-        } catch (e) { showToast('配置无效，请检查 URL 和 Key', 'error'); return; }
         showToast('Supabase 配置已保存', 'success');
         }
 
-        function configSupabase() {
-        const url = prompt('请输入 Supabase Project URL（例如 https://xxxxx.supabase.co）：', supabaseConfig.url || '');
-        if (url === null) return;
-        const anonKey = prompt('请输入 Supabase anon public 密钥：', supabaseConfig.anonKey || '');
-        if (anonKey === null) return;
-        const trimmedUrl = url.trim();
-        const trimmedKey = anonKey.trim();
-        if (trimmedUrl && trimmedKey) {
-        saveSupabaseConfig(trimmedUrl, trimmedKey);
-        } else {
-        showToast('URL 和 Key 不能为空', 'error');
-        }
+        // 显示配置模态框
+        function showSupabaseConfigModal() {
+        document.getElementById('supabaseUrlInput').value = supabaseConfig.url || '';
+        document.getElementById('supabaseAnonInput').value = supabaseConfig.anonKey || '';
+        document.getElementById('supabaseConfigModal').style.display = 'flex';
         }
 
+        function closeSupabaseConfig() {
+        document.getElementById('supabaseConfigModal').style.display = 'none';
+        }
+
+        function saveSupabaseConfigFromModal() {
+        const url = document.getElementById('supabaseUrlInput').value.trim();
+        const anonKey = document.getElementById('supabaseAnonInput').value.trim();
+        if (!url || !anonKey) {
+        showToast('URL 和 Key 都不能为空', 'error');
+        return;
+        }
+        saveSupabaseConfig(url, anonKey);
+        closeSupabaseConfig();
+        }
+
+        // ----- 上传 -----
         async function uploadToSupabase() {
-        if (!supabaseClient) {
+        if (!supabaseConfig.url || !supabaseConfig.anonKey) {
         showToast('请先配置 Supabase（点击 "☁️ Supabase配置"）', 'warning');
         return;
         }
         showLoading();
         try {
-        const data = getSyncData();
-        const libraryName = data.currentLibrary || '默认题库';
-        const { error } = await supabaseClient
-        .from('shuati_user_data')
-        .upsert({
+        const libName = currentLibrary || '默认题库';
+        const data = getSyncDataForLibrary(libName);
+        const url = `${supabaseConfig.url}/rest/v1/shuati_user_data?on_conflict=user_id,library_name`;
+        const headers = {
+        'Content-Type': 'application/json',
+        'apikey': supabaseConfig.anonKey,
+        'Authorization': `Bearer ${supabaseConfig.anonKey}`
+        };
+        const body = {
         user_id: 'default_user',
-        library_name: libraryName,
+        library_name: libName,
         data: data,
         updated_at: new Date().toISOString()
-        }, { onConflict: 'user_id, library_name' });
-
-        if (error) throw error;
+        };
+        const response = await fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(body)
+        });
+        if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errText}`);
+        }
         showToast('☁️ 数据已同步到 Supabase！', 'success');
         document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
         } catch (err) {
@@ -3147,39 +3182,39 @@
         }
         }
 
+        // ----- 下载 -----
         async function downloadFromSupabase() {
-        if (!supabaseClient) {
+        if (!supabaseConfig.url || !supabaseConfig.anonKey) {
         showToast('请先配置 Supabase', 'warning');
         return;
         }
         showLoading();
         try {
-        const libraryName = currentLibrary || '默认题库';
-        const { data, error } = await supabaseClient
-        .from('shuati_user_data')
-        .select('data')
-        .eq('user_id', 'default_user')
-        .eq('library_name', libraryName)
-        .single();
-
-        if (error) {
-        if (error.code === 'PGRST116') {
-        showToast('云端暂无数据，请先上传', 'warning');
-        } else {
-        throw error;
+        const libName = currentLibrary || '默认题库';
+        const url = `${supabaseConfig.url}/rest/v1/shuati_user_data?select=data&user_id=eq.default_user&library_name=eq.${encodeURIComponent(libName)}`;
+        const headers = {
+        'apikey': supabaseConfig.anonKey,
+        'Authorization': `Bearer ${supabaseConfig.anonKey}`
+        };
+        const response = await fetch(url, { headers });
+        if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errText}`);
         }
-        return;
-        }
-        if (!data) {
+        const result = await response.json();
+        if (!result || result.length === 0) {
         showToast('云端暂无数据，请先上传', 'warning');
         return;
         }
-
-        const confirm = await showConfirm('从云端恢复', '将用云端数据覆盖当前所有本地数据，确定继续吗？');
+        const row = result[0];
+        if (!row.data) {
+        showToast('云端数据格式异常', 'error');
+        return;
+        }
+        const confirm = await showConfirm('从云端恢复', '将用云端数据覆盖当前题库，确定继续吗？');
         if (!confirm) return;
-
-        applySyncData(data.data);
-        showToast('☁️ 数据已从 Supabase 恢复！', 'success');
+        applySyncDataForLibrary(libName, row.data);
+        showToast('☁️ 数据已从云端恢复', 'success');
         document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
         } catch (err) {
         showToast('下载失败：' + err.message, 'error', 4000);
@@ -3199,67 +3234,58 @@
         const toggle = document.getElementById('autoSyncToggle');
         if (toggle) toggle.checked = autoSyncEnabled;
         }
+        loadAutoSyncSetting();
 
         async function autoDownloadOnLoad() {
-        if (!autoSyncEnabled) return;
-        if (!supabaseClient) return;
-        if (!isFirstLoad) return;
+        if (!autoSyncEnabled || !supabaseConfig.url || !supabaseConfig.anonKey || !isFirstLoad) return;
         isFirstLoad = false;
         try {
-        const libraryName = currentLibrary || '默认题库';
-        const { data, error } = await supabaseClient
-        .from('shuati_user_data')
-        .select('data')
-        .eq('user_id', 'default_user')
-        .eq('library_name', libraryName)
-        .single();
-        if (error) {
-        if (error.code !== 'PGRST116') console.warn('自动下载出错', error);
+        const libName = currentLibrary || '默认题库';
+        const url = `${supabaseConfig.url}/rest/v1/shuati_user_data?select=data&user_id=eq.default_user&library_name=eq.${encodeURIComponent(libName)}`;
+        const headers = {
+        'apikey': supabaseConfig.anonKey,
+        'Authorization': `Bearer ${supabaseConfig.anonKey}`
+        };
+        const response = await fetch(url, { headers });
+        if (!response.ok) {
+        if (response.status !== 404) console.warn('自动下载出错', response.status);
         return;
         }
-        if (data && data.data) {
-        applySyncData(data.data);
-        showToast('☁️ 已自动同步云端数据', 'info', 2000);
+        const result = await response.json();
+        if (result && result.length > 0 && result[0].data) {
+        applySyncDataForLibrary(libName, result[0].data);
+        showToast('☁️ 已自动同步当前题库', 'info', 2000);
         document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
         }
         } catch (e) { console.warn('自动下载失败', e); }
         }
 
         async function autoUploadOnUnload() {
-    if (!autoSyncEnabled) return;
-    if (!supabaseClient) return;
-    try {
-        const data = getSyncData();
-        const libraryName = data.currentLibrary || '默认题库';
-        // 手动构造 URL 和 headers
-        const url = supabaseConfig.url + '/rest/v1/shuati_user_data?on_conflict=user_id%2C+library_name';
+        if (!autoSyncEnabled || !supabaseConfig.url || !supabaseConfig.anonKey) return;
+        try {
+        const libName = currentLibrary || '默认题库';
+        const data = getSyncDataForLibrary(libName);
+        const url = `${supabaseConfig.url}/rest/v1/shuati_user_data?on_conflict=user_id,library_name`;
         const headers = {
-            'Content-Type': 'application/json',
-            'apikey': supabaseConfig.anonKey,
-            'Authorization': 'Bearer ' + supabaseConfig.anonKey
+        'Content-Type': 'application/json',
+        'apikey': supabaseConfig.anonKey,
+        'Authorization': `Bearer ${supabaseConfig.anonKey}`
         };
-        const body = JSON.stringify({
-            user_id: 'default_user',
-            library_name: libraryName,
-            data: data,
-            updated_at: new Date().toISOString()
+        const body = {
+        user_id: 'default_user',
+        library_name: libName,
+        data: data,
+        updated_at: new Date().toISOString()
+        };
+        await fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(body),
+        keepalive: true
         });
-        // 使用 keepalive: true 确保页面关闭后请求继续
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: headers,
-            body: body,
-            keepalive: true
-        });
-        if (response.ok) {
-            console.log('自动上传成功');
-        } else {
-            console.warn('自动上传状态码:', response.status);
+        console.log('自动上传成功');
+        } catch (e) { console.warn('自动上传失败', e); }
         }
-    } catch (e) {
-        console.warn('自动上传失败', e);
-    }
-}
 
         // --- 注入 UI ---
         function injectSupabaseUI() {
@@ -3269,7 +3295,7 @@
         const configBtn = document.createElement('button');
         configBtn.className = 'btn btn-secondary';
         configBtn.innerHTML = '☁️ Supabase配置';
-        configBtn.onclick = configSupabase;
+        configBtn.onclick = showSupabaseConfigModal;
         toolbar.appendChild(configBtn);
 
         const syncGroup = document.createElement('span');
@@ -3314,7 +3340,7 @@
         // ============================================================
         // 18. 初始化
         // ============================================================
-        // 保存原有 onload 以避免覆盖
+        // 保存原有 onload
         const originalOnload = window.onload;
 
         window.onload = function() {
@@ -3353,7 +3379,7 @@
         }
 
         // 5. 绑定页面关闭事件（自动上传）
-        window.addEventListener('beforeunload', function(e) {
+        window.addEventListener('beforeunload', function() {
         if (autoSyncEnabled) {
         autoUploadOnUnload().catch(() => {});
         }
