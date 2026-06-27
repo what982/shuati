@@ -3226,22 +3226,40 @@
         }
 
         async function autoUploadOnUnload() {
-        if (!autoSyncEnabled) return;
-        if (!supabaseClient) return;
-        try {
+    if (!autoSyncEnabled) return;
+    if (!supabaseClient) return;
+    try {
         const data = getSyncData();
         const libraryName = data.currentLibrary || '默认题库';
-        await supabaseClient
-        .from('shuati_user_data')
-        .upsert({
-        user_id: 'default_user',
-        library_name: libraryName,
-        data: data,
-        updated_at: new Date().toISOString()
-        }, { onConflict: 'user_id, library_name' });
-        console.log('自动上传成功');
-        } catch (e) { console.warn('自动上传失败', e); }
+        // 手动构造 URL 和 headers
+        const url = supabaseConfig.url + '/rest/v1/shuati_user_data?on_conflict=user_id%2C+library_name';
+        const headers = {
+            'Content-Type': 'application/json',
+            'apikey': supabaseConfig.anonKey,
+            'Authorization': 'Bearer ' + supabaseConfig.anonKey
+        };
+        const body = JSON.stringify({
+            user_id: 'default_user',
+            library_name: libraryName,
+            data: data,
+            updated_at: new Date().toISOString()
+        });
+        // 使用 keepalive: true 确保页面关闭后请求继续
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: headers,
+            body: body,
+            keepalive: true
+        });
+        if (response.ok) {
+            console.log('自动上传成功');
+        } else {
+            console.warn('自动上传状态码:', response.status);
         }
+    } catch (e) {
+        console.warn('自动上传失败', e);
+    }
+}
 
         // --- 注入 UI ---
         function injectSupabaseUI() {
