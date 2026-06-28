@@ -17,10 +17,10 @@
             font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
             background: #f0f2f5;
             padding: 12px;
-            padding-top: 72px;
+            padding-top: 56px;
             transition: background 0.3s, color 0.3s;
         }
-        /* ---- 固定工具栏 ---- */
+        /* ---- 精简固定工具栏 ---- */
         .toolbar-fixed {
             position: fixed;
             top: 0;
@@ -29,21 +29,20 @@
             z-index: 999;
             background: #fff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-            padding: 6px 12px;
+            padding: 4px 12px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             transition: background 0.3s, box-shadow 0.3s;
-            max-height: 68px;
-            overflow-y: auto;
+            min-height: 44px;
         }
         body.dark .toolbar-fixed {
             background: #1a1a2e;
             box-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
         .toolbar-fixed .btn {
-            padding: 4px 10px;
+            padding: 4px 8px;
             border: none;
             border-radius: 4px;
             font-size: 13px;
@@ -56,24 +55,11 @@
         .toolbar-fixed .btn-primary:hover { background: #1a6a9a; }
         .toolbar-fixed .btn-success { background: #27ae60; }
         .toolbar-fixed .btn-success:hover { background: #1e8449; }
-        .toolbar-fixed .btn-warning { background: #f39c12; }
-        .toolbar-fixed .btn-warning:hover { background: #d68910; }
-        .toolbar-fixed .btn-danger { background: #e74c3c; }
-        .toolbar-fixed .btn-danger:hover { background: #c0392b; }
-        .toolbar-fixed .btn-secondary { background: #95a5a6; }
-        .toolbar-fixed .btn-secondary:hover { background: #7f8c8d; }
-        .toolbar-fixed .btn-sm { padding: 2px 6px; font-size: 12px; }
         body.dark .toolbar-fixed .btn { color: #fff; }
         body.dark .toolbar-fixed .btn-primary { background: #2a5a8a; }
         body.dark .toolbar-fixed .btn-primary:hover { background: #3a6a9a; }
         body.dark .toolbar-fixed .btn-success { background: #1b6b3a; }
         body.dark .toolbar-fixed .btn-success:hover { background: #2a7b4a; }
-        body.dark .toolbar-fixed .btn-warning { background: #b8860b; }
-        body.dark .toolbar-fixed .btn-warning:hover { background: #cc9900; }
-        body.dark .toolbar-fixed .btn-danger { background: #8b1a1a; }
-        body.dark .toolbar-fixed .btn-danger:hover { background: #aa2222; }
-        body.dark .toolbar-fixed .btn-secondary { background: #3a4a5a; }
-        body.dark .toolbar-fixed .btn-secondary:hover { background: #4a5a6a; }
         .toolbar-fixed .position-indicator {
             font-size: 13px;
             color: #555;
@@ -108,19 +94,63 @@
         }
         body.dark .toolbar-fixed .cloud-time { color: #aaa; }
 
+        /* ---- 次要工具栏（非固定） ---- */
+        .toolbar-secondary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 10px 0;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            align-items: center;
+        }
+        body.dark .toolbar-secondary {
+            background: #1a2a3a;
+            border-color: #2a3a5a;
+        }
+        .toolbar-secondary .btn {
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            color: #fff;
+        }
+        .toolbar-secondary .btn-success { background: #27ae60; }
+        .toolbar-secondary .btn-success:hover { background: #1e8449; }
+        .toolbar-secondary .btn-warning { background: #f39c12; }
+        .toolbar-secondary .btn-warning:hover { background: #d68910; }
+        .toolbar-secondary .btn-danger { background: #e74c3c; }
+        .toolbar-secondary .btn-danger:hover { background: #c0392b; }
+        .toolbar-secondary .btn-secondary { background: #95a5a6; }
+        .toolbar-secondary .btn-secondary:hover { background: #7f8c8d; }
+        .toolbar-secondary .btn-sm { font-size: 12px; padding: 2px 8px; }
+        body.dark .toolbar-secondary .btn { color: #fff; }
+        body.dark .toolbar-secondary .btn-success { background: #1b6b3a; }
+        body.dark .toolbar-secondary .btn-success:hover { background: #2a7b4a; }
+        body.dark .toolbar-secondary .btn-warning { background: #b8860b; }
+        body.dark .toolbar-secondary .btn-warning:hover { background: #cc9900; }
+        body.dark .toolbar-secondary .btn-danger { background: #8b1a1a; }
+        body.dark .toolbar-secondary .btn-danger:hover { background: #aa2222; }
+        body.dark .toolbar-secondary .btn-secondary { background: #3a4a5a; }
+        body.dark .toolbar-secondary .btn-secondary:hover { background: #4a5a6a; }
+
         /* ---- 主体容器 ---- */
         .container {
             max-width: 1300px;
             margin: 0 auto;
             background: #fff;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             padding: 16px;
             transition: background 0.3s, box-shadow 0.3s;
         }
         body.dark .container {
             background: #16213e;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
         body.dark .container,
         body.dark .container * { color: #e0e0e0; }
@@ -137,7 +167,6 @@
         body.dark h1 { color: #e0e0e0; border-bottom-color: #4a7a9a; }
 
         /* ---- 其他样式（与之前完全一致） ---- */
-        /* 以下为原有样式（已精简，但功能完整） */
         .btn { padding: 6px 14px; border: none; border-radius: 6px; cursor: pointer; }
         .btn-sm { padding: 3px 8px; font-size: 12px; }
         .btn-success { background: #27ae60; color: #fff; }
@@ -251,53 +280,52 @@
         .batch-count.show { display: inline; }
         .img-placeholder { color: #999; font-size: 14px; display: inline-block; padding: 4px 8px; background: #f5f5f5; border-radius: 4px; }
         @media (max-width: 768px) {
-            body { padding-top: 90px; }
-            .toolbar-fixed { max-height: 90px; padding: 4px 8px; gap: 4px; }
-            .toolbar-fixed .btn { font-size: 11px; padding: 3px 6px; }
+            body { padding-top: 52px; }
+            .toolbar-fixed { padding: 2px 8px; gap: 3px; min-height: 38px; }
+            .toolbar-fixed .btn { font-size: 11px; padding: 2px 6px; }
             .toolbar-fixed .position-indicator, .toolbar-fixed .rate-display { font-size: 11px; padding: 1px 6px; }
             .container { padding: 10px; }
             h1 { font-size: 1.2rem; }
+            .toolbar-secondary { padding: 6px 8px; gap: 4px; }
+            .toolbar-secondary .btn { font-size: 11px; padding: 2px 6px; }
         }
         @media (max-width: 480px) {
-            body { padding-top: 105px; }
-            .toolbar-fixed { max-height: 105px; }
+            body { padding-top: 48px; }
+            .toolbar-fixed { min-height: 34px; }
         }
     </style>
 </head>
 <body>
-    <!-- ===== 固定工具栏 ===== -->
+    <!-- ===== 固定工具栏（仅核心按钮） ===== -->
     <div class="toolbar-fixed" id="fixedToolbar">
         <button class="btn btn-primary" onclick="toggleMode()">🔄 错题模式</button>
         <button class="btn btn-success" onclick="saveProgressToCloud()">💾 保存进度</button>
-        <button class="btn btn-success" onclick="showReport()">📊 报告</button>
-        <button class="btn btn-warning" onclick="exportCurrentProgress()">⬇️ 导出进度</button>
-        <button class="btn btn-secondary" onclick="toggleDarkMode()" id="darkModeBtn">🌙 暗黑</button>
-
         <span class="position-indicator" id="positionIndicatorFixed">当前第 0 / 0 题</span>
         <span class="rate-display" id="rateDisplayFixed">正确率：0%</span>
-
         <span class="spacer"></span>
-
-        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('importFile').click()">📂 导入进度</button>
-        <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importProgress(event)">
-        <button class="btn btn-danger btn-sm" onclick="resetCurrent()">🗑️ 重置</button>
-        <button class="btn btn-secondary btn-sm" onclick="exportAllLibraries()">📦 导出题库</button>
-        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('importAllBtn').click()">📂 导入题库</button>
-        <input type="file" id="importAllBtn" accept=".json" style="display:none;" onchange="importAllLibraries(event)">
-        <button class="btn btn-success btn-sm" onclick="openAddQuestion()">➕ 添加</button>
-        <button class="btn btn-secondary btn-sm" onclick="setImgbbApiKey()">🔑 图床</button>
-        <button class="btn btn-danger btn-sm" id="redoWrongBtn" style="display:none;" onclick="redoWrongQuestions()">🔄 重做错题</button>
-
-        <!-- 云端相关 -->
-        <button class="btn btn-secondary btn-sm" onclick="showSupabaseConfigModal()">☁️ 配置</button>
-        <button class="btn btn-secondary btn-sm" onclick="uploadAllLibraries()">📤 上传全部</button>
-        <button class="btn btn-secondary btn-sm" onclick="downloadAllLibraries()">📥 下载全部</button>
-        <span class="cloud-time" id="cloudLastSync">上次同步：--</span>
+        <span id="cloudLastSync" style="font-size:11px;color:#888;margin-left:4px;white-space:nowrap;">上次同步：--</span>
     </div>
 
     <!-- ===== 主体 ===== -->
     <div class="container">
         <h1><span>📚 刷题系统</span><span style="font-size:16px;font-weight:normal;" id="modeLabel">全部题目</span></h1>
+
+        <!-- ===== 次要工具栏（非固定） ===== -->
+        <div class="toolbar-secondary">
+            <button class="btn btn-success" onclick="showReport()">📊 报告</button>
+            <button class="btn btn-secondary" onclick="toggleDarkMode()" id="darkModeBtn">🌙 暗黑</button>
+            <button class="btn btn-warning" onclick="exportCurrentProgress()">⬇️ 导出进度</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📂 导入进度</button>
+            <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importProgress(event)">
+            <button class="btn btn-danger" onclick="resetCurrent()">🗑️ 重置</button>
+            <button class="btn btn-secondary" onclick="exportAllLibraries()">📦 导出题库</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('importAllBtn').click()">📂 导入题库</button>
+            <input type="file" id="importAllBtn" accept=".json" style="display:none;" onchange="importAllLibraries(event)">
+            <button class="btn btn-success" onclick="openAddQuestion()">➕ 添加</button>
+            <button class="btn btn-secondary" onclick="setImgbbApiKey()">🔑 图床</button>
+            <button class="btn btn-danger" id="redoWrongBtn" style="display:none;" onclick="redoWrongQuestions()">🔄 重做错题</button>
+            <button class="btn btn-secondary" onclick="showSupabaseConfigModal()">☁️ 配置</button>
+        </div>
 
         <div class="filter-bar">
             <select id="chapterFilter" onchange="applyFilters()"><option value="all">📂 全部章节</option></select>
@@ -402,6 +430,8 @@
         <button class="floating-btn jump-btn" onclick="jumpToQuestionInput()" title="跳转题目">🔢</button>
     </div>
 
+    <!-- ============================================================ -->
+    <!-- ===== JavaScript ===== -->
     <script>
         // ============================================================
         // 1. 全局变量
@@ -444,7 +474,7 @@
         const pasteHandlers = new WeakMap();
         let imgbbApiKey = '';
 
-        // 版本控制（增量）
+        // 版本控制
         let dataVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
         let lastSyncedVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
 
@@ -758,7 +788,7 @@
             saveCurrentLibrary();
             closeQuestionModal();
             render();
-            syncCurrentLibraryToCloud().catch(e => console.warn('自动同步失败:', e));
+            syncCurrentLibraryToCloud(true).catch(e => console.warn('同步失败:', e));
             showToast('保存成功并已同步云端！', 'success');
         }
 
@@ -774,7 +804,7 @@
                     saveDataVersion();
                     saveCurrentLibrary();
                     render();
-                    syncCurrentLibraryToCloud().catch(e => console.warn('自动同步失败:', e));
+                    syncCurrentLibraryToCloud(true).catch(e => console.warn('同步失败:', e));
                     showToast('已删除并同步云端', 'info');
                 }
             });
@@ -1206,7 +1236,7 @@
                 wrongQuestions.clear();
                 saveCurrentLibrary();
                 render();
-                syncCurrentLibraryToCloud().catch(e => console.warn('自动同步失败:', e));
+                syncCurrentLibraryToCloud(true).catch(e => console.warn('同步失败:', e));
                 showToast('已重置 ' + toRemove.size + ' 道错题并同步云端', 'success');
             });
         }
@@ -1406,7 +1436,7 @@
                     });
                     saveCurrentLibrary();
                     render();
-                    syncCurrentLibraryToCloud().catch(e => console.warn('同步失败:', e));
+                    syncCurrentLibraryToCloud(true).catch(e => console.warn('同步失败:', e));
                     showToast('进度导入成功并已同步云端！', 'success');
                 } catch (err) { showToast('导入失败：' + err.message, 'error'); }
             };
@@ -1425,7 +1455,7 @@
             saveDataVersion();
             saveCurrentLibrary();
             render();
-            syncCurrentLibraryToCloud().catch(e => console.warn('同步失败:', e));
+            syncCurrentLibraryToCloud(true).catch(e => console.warn('同步失败:', e));
             showToast('已重置当前题库并同步云端！', 'success');
         }
 
@@ -2292,9 +2322,15 @@
             }
         }
 
-        // ---- 同步当前题库到云端 ----
-        async function syncCurrentLibraryToCloud() {
-            if (!supabaseConfig.url || !supabaseConfig.anonKey) return;
+        // ---- 同步当前题库到云端（增加用户提示） ----
+        async function syncCurrentLibraryToCloud(showUserMessage = false) {
+            if (!supabaseConfig.url || !supabaseConfig.anonKey) {
+                if (!window._supabaseConfigWarned) {
+                    showToast('⚠️ 请先配置 Supabase 以启用云端同步', 'warning', 3000);
+                    window._supabaseConfigWarned = true;
+                }
+                return;
+            }
             const libName = currentLibrary;
             if (!libraries[libName]) return;
             try {
@@ -2302,7 +2338,22 @@
                 dataVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
                 lastSyncedVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
                 saveDataVersion();
-            } catch (e) { console.warn('同步失败:', e); }
+                const timeEl = document.getElementById('cloudLastSync');
+                if (timeEl) {
+                    const now = new Date().toLocaleString();
+                    timeEl.textContent = '上次同步：' + now;
+                    safeSetStorage('shuati_lastSyncTime', now);
+                }
+                if (showUserMessage) {
+                    showToast('☁️ 数据已同步云端', 'success', 1500);
+                }
+            } catch (e) {
+                console.warn('同步失败:', e);
+                if (showUserMessage) {
+                    showToast('⚠️ 同步失败，请检查网络', 'error', 3000);
+                }
+                throw e;
+            }
         }
 
         // ---- 保存答题进度 ----
@@ -2319,14 +2370,19 @@
                 lastSyncedVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
                 saveDataVersion();
                 showToast('💾 答题进度已保存到云端！', 'success');
-                document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
+                const timeEl = document.getElementById('cloudLastSync');
+                if (timeEl) {
+                    const now = new Date().toLocaleString();
+                    timeEl.textContent = '上次同步：' + now;
+                    safeSetStorage('shuati_lastSyncTime', now);
+                }
             } catch (err) {
                 showToast('保存失败：' + err.message, 'error', 4000);
                 console.error(err);
             } finally { hideLoading(); }
         }
 
-        // ---- 全量上传所有题库 ----
+        // ---- 全量上传所有题库（可选，保留） ----
         async function uploadAllLibraries() {
             if (!supabaseConfig.url || !supabaseConfig.anonKey) {
                 showToast('请先配置 Supabase', 'warning');
@@ -2354,13 +2410,18 @@
                     saveDataVersion();
                     showToast(`✅ 成功上传 ${successCount} 个题库${failCount > 0 ? `，${failCount} 个失败` : ''}`, successCount > 0 ?
                         'success' : 'warning');
-                    document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
+                    const timeEl = document.getElementById('cloudLastSync');
+                    if (timeEl) {
+                        const now = new Date().toLocaleString();
+                        timeEl.textContent = '上次同步：' + now;
+                        safeSetStorage('shuati_lastSyncTime', now);
+                    }
                 } else { showToast('所有题库上传失败，请检查网络或配置', 'error'); }
             } catch (err) { showToast('上传失败：' + err.message, 'error');
                 console.error(err); } finally { hideLoading(); }
         }
 
-        // ---- 全量下载所有题库 ----
+        // ---- 全量下载所有题库（可选，保留） ----
         async function downloadAllLibraries() {
             if (!supabaseConfig.url || !supabaseConfig.anonKey) {
                 showToast('请先配置 Supabase', 'warning');
@@ -2454,7 +2515,12 @@
                 }
 
                 showToast(`☁️ 已从云端恢复 ${Object.keys(libraries).length} 个题库`, 'success');
-                document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
+                const timeEl = document.getElementById('cloudLastSync');
+                if (timeEl) {
+                    const now = new Date().toLocaleString();
+                    timeEl.textContent = '上次同步：' + now;
+                    safeSetStorage('shuati_lastSyncTime', now);
+                }
             } catch (err) {
                 showToast('应用数据失败：' + err.message, 'error');
                 console.error(err);
@@ -2462,8 +2528,11 @@
         }
 
         // ---- 自动下载（页面加载时） ----
-        async function autoDownloadOnLoad() {
-            if (!supabaseConfig.url || !supabaseConfig.anonKey) return;
+        async function autoDownloadOnLoad(retries = 1) {
+            if (!supabaseConfig.url || !supabaseConfig.anonKey) {
+                console.log('Supabase 未配置，跳过自动下载');
+                return;
+            }
             try {
                 const url =
                     `${supabaseConfig.url}/rest/v1/shuati_user_data?select=data,library_name&user_id=eq.default_user`;
@@ -2473,8 +2542,8 @@
                 };
                 const response = await fetch(url, { headers });
                 if (!response.ok) {
-                    if (response.status !== 404) console.warn('自动下载出错', response.status);
-                    return;
+                    if (response.status === 404) return;
+                    throw new Error(`HTTP ${response.status}`);
                 }
                 const result = await response.json();
                 if (result && result.length > 0) {
@@ -2535,10 +2604,20 @@
                             icon.classList.remove('collapsed');
                         }
                         showToast('☁️ 已自动加载云端数据', 'info', 1500);
-                        document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
+                        const timeEl = document.getElementById('cloudLastSync');
+                        if (timeEl) {
+                            const now = new Date().toLocaleString();
+                            timeEl.textContent = '上次同步：' + now;
+                            safeSetStorage('shuati_lastSyncTime', now);
+                        }
                     }
                 }
-            } catch (e) { console.warn('自动下载失败', e); }
+            } catch (e) {
+                console.warn('自动下载失败:', e);
+                if (retries > 0) {
+                    setTimeout(() => autoDownloadOnLoad(retries - 1), 2000);
+                }
+            }
         }
 
         // ---- 并发控制 ----
@@ -2560,9 +2639,6 @@
             await Promise.all(executing);
             return results;
         }
-
-        // ---- 注入UI（已直接写在HTML中，无需额外注入） ----
-        // 但需要更新cloudLastSync元素
 
         // ============================================================
         // 20. 初始化
@@ -2592,47 +2668,12 @@
 
             loadDataVersion();
             loadSupabaseConfig();
-            setTimeout(autoDownloadOnLoad, 500);
-            // 确保云同步时间显示
+            setTimeout(autoDownloadOnLoad, 1000);
+            // 显示上次同步时间
             const timeEl = document.getElementById('cloudLastSync');
-            if (timeEl && supabaseConfig.url && supabaseConfig.anonKey) {
-                // 可显示上次同步时间（从localStorage读取）
+            if (timeEl) {
                 const lastSync = safeGetStorage('shuati_lastSyncTime');
                 if (lastSync) timeEl.textContent = '上次同步：' + lastSync;
-            }
-        };
-
-        // 在保存进度后更新同步时间
-        const origSaveProgress = saveProgressToCloud;
-        saveProgressToCloud = async function() {
-            await origSaveProgress();
-            const timeEl = document.getElementById('cloudLastSync');
-            if (timeEl) {
-                const now = new Date().toLocaleString();
-                timeEl.textContent = '上次同步：' + now;
-                safeSetStorage('shuati_lastSyncTime', now);
-            }
-        };
-
-        // 同样在上传全部/下载全部后更新
-        const origUploadAll = uploadAllLibraries;
-        uploadAllLibraries = async function() {
-            await origUploadAll();
-            const timeEl = document.getElementById('cloudLastSync');
-            if (timeEl) {
-                const now = new Date().toLocaleString();
-                timeEl.textContent = '上次同步：' + now;
-                safeSetStorage('shuati_lastSyncTime', now);
-            }
-        };
-        const origDownloadAll = downloadAllLibraries;
-        downloadAllLibraries = async function() {
-            await origDownloadAll();
-            const timeEl = document.getElementById('cloudLastSync');
-            if (timeEl) {
-                const now = new Date().toLocaleString();
-                timeEl.textContent = '上次同步：' + now;
-                safeSetStorage('shuati_lastSyncTime', now);
             }
         };
     </script>
