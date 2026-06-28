@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js">
     </script>
     <style>
-        /* ===== 完整样式 ===== */
+        /* ===== 基础样式 ===== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -17,8 +17,98 @@
             font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
             background: #f0f2f5;
             padding: 12px;
+            padding-top: 72px;
             transition: background 0.3s, color 0.3s;
         }
+        /* ---- 固定工具栏 ---- */
+        .toolbar-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            padding: 6px 12px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.3s, box-shadow 0.3s;
+            max-height: 68px;
+            overflow-y: auto;
+        }
+        body.dark .toolbar-fixed {
+            background: #1a1a2e;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+        .toolbar-fixed .btn {
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s;
+            color: #fff;
+        }
+        .toolbar-fixed .btn-primary { background: #2a7ab0; }
+        .toolbar-fixed .btn-primary:hover { background: #1a6a9a; }
+        .toolbar-fixed .btn-success { background: #27ae60; }
+        .toolbar-fixed .btn-success:hover { background: #1e8449; }
+        .toolbar-fixed .btn-warning { background: #f39c12; }
+        .toolbar-fixed .btn-warning:hover { background: #d68910; }
+        .toolbar-fixed .btn-danger { background: #e74c3c; }
+        .toolbar-fixed .btn-danger:hover { background: #c0392b; }
+        .toolbar-fixed .btn-secondary { background: #95a5a6; }
+        .toolbar-fixed .btn-secondary:hover { background: #7f8c8d; }
+        .toolbar-fixed .btn-sm { padding: 2px 6px; font-size: 12px; }
+        body.dark .toolbar-fixed .btn { color: #fff; }
+        body.dark .toolbar-fixed .btn-primary { background: #2a5a8a; }
+        body.dark .toolbar-fixed .btn-primary:hover { background: #3a6a9a; }
+        body.dark .toolbar-fixed .btn-success { background: #1b6b3a; }
+        body.dark .toolbar-fixed .btn-success:hover { background: #2a7b4a; }
+        body.dark .toolbar-fixed .btn-warning { background: #b8860b; }
+        body.dark .toolbar-fixed .btn-warning:hover { background: #cc9900; }
+        body.dark .toolbar-fixed .btn-danger { background: #8b1a1a; }
+        body.dark .toolbar-fixed .btn-danger:hover { background: #aa2222; }
+        body.dark .toolbar-fixed .btn-secondary { background: #3a4a5a; }
+        body.dark .toolbar-fixed .btn-secondary:hover { background: #4a5a6a; }
+        .toolbar-fixed .position-indicator {
+            font-size: 13px;
+            color: #555;
+            padding: 2px 8px;
+            background: #ecf0f1;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+        body.dark .toolbar-fixed .position-indicator {
+            background: #2a3a5a;
+            color: #e0e0e0;
+        }
+        .toolbar-fixed .rate-display {
+            font-size: 13px;
+            font-weight: bold;
+            color: #2c3e50;
+            background: #ecf0f1;
+            padding: 2px 10px;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+        body.dark .toolbar-fixed .rate-display {
+            background: #2a3a5a;
+            color: #e0e0e0;
+        }
+        .toolbar-fixed .spacer { flex: 1; }
+        .toolbar-fixed .cloud-time {
+            font-size: 11px;
+            color: #888;
+            margin-left: 4px;
+            white-space: nowrap;
+        }
+        body.dark .toolbar-fixed .cloud-time { color: #aaa; }
+
+        /* ---- 主体容器 ---- */
         .container {
             max-width: 1300px;
             margin: 0 auto;
@@ -28,111 +118,12 @@
             padding: 16px;
             transition: background 0.3s, box-shadow 0.3s;
         }
-        body.dark {
-            background: #1a1a2e;
-        }
         body.dark .container {
             background: #16213e;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
         }
         body.dark .container,
-        body.dark .container * {
-            color: #e0e0e0;
-        }
-        body.dark .btn {
-            background: #3a4a6b;
-            color: #fff;
-        }
-        body.dark .btn:hover {
-            background: #4a5a7b;
-        }
-        body.dark .btn-success {
-            background: #1b6b3a;
-        }
-        body.dark .btn-success:hover {
-            background: #2a7b4a;
-        }
-        body.dark .btn-warning {
-            background: #b8860b;
-        }
-        body.dark .btn-warning:hover {
-            background: #cc9900;
-        }
-        body.dark .btn-danger {
-            background: #8b1a1a;
-        }
-        body.dark .btn-danger:hover {
-            background: #aa2222;
-        }
-        body.dark .btn-secondary {
-            background: #3a4a5a;
-        }
-        body.dark .btn-secondary:hover {
-            background: #4a5a6a;
-        }
-        body.dark .question-item {
-            background: #1e2a4a;
-            border-color: #2a3a5a;
-        }
-        body.dark .question-item:hover {
-            background: #2a3a5a;
-        }
-        body.dark .options label:hover {
-            background: #2a3a5a;
-        }
-        body.dark .answer-area {
-            background: #1a2a3a;
-            border-left-color: #4a7a9a;
-        }
-        body.dark .stats span {
-            background: #2a3a5a;
-        }
-        body.dark .library-item {
-            background: #1e2a4a;
-            border-color: #2a3a5a;
-        }
-        body.dark .library-item.active {
-            background: #2a4a6a;
-            border-color: #4a7a9a;
-        }
-        body.dark .section-title {
-            background: #1a2a3a;
-            border-left-color: #4a7a9a;
-        }
-        body.dark .library-area {
-            background: #1a2a3a;
-            border-color: #2a3a5a;
-        }
-        body.dark .modal-box {
-            background: #16213e;
-        }
-        body.dark .modal-box input,
-        body.dark .modal-box select,
-        body.dark .modal-box .editable-div {
-            background: #1e2a4a;
-            border-color: #3a4a6b;
-            color: #e0e0e0;
-        }
-        body.dark .modal-box .editable-div {
-            background: #1e2a4a;
-        }
-        body.dark .debug-area {
-            background: #1a2a3a;
-            border-color: #2a3a5a;
-        }
-        body.dark .floating-btn {
-            background: #3a4a6b;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-        }
-        body.dark .floating-btn:hover {
-            background: #4a5a7b;
-        }
-        body.dark .floating-btn.jump-btn {
-            background: #1b6b3a;
-        }
-        body.dark .floating-btn.jump-btn:hover {
-            background: #2a7b4a;
-        }
+        body.dark .container * { color: #e0e0e0; }
         h1 {
             color: #2c3e50;
             border-bottom: 2px solid #3498db;
@@ -143,940 +134,177 @@
             flex-wrap: wrap;
             font-size: 1.5rem;
         }
-        body.dark h1 {
-            color: #e0e0e0;
-            border-bottom-color: #4a7a9a;
-        }
-        .toolbar {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin: 12px 0;
-            align-items: center;
-        }
-        .btn {
-            padding: 6px 14px;
-            border: none;
-            border-radius: 6px;
-            background: #3498db;
-            color: white;
-            font-size: 14px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: background 0.2s;
-        }
-        .btn:hover {
-            background: #217dbb;
-        }
-        .btn-success {
-            background: #27ae60;
-        }
-        .btn-success:hover {
-            background: #1e8449;
-        }
-        .btn-warning {
-            background: #f39c12;
-        }
-        .btn-warning:hover {
-            background: #d68910;
-        }
-        .btn-danger {
-            background: #e74c3c;
-        }
-        .btn-danger:hover {
-            background: #c0392b;
-        }
-        .btn-secondary {
-            background: #95a5a6;
-        }
-        .btn-secondary:hover {
-            background: #7f8c8d;
-        }
-        .btn-sm {
-            padding: 3px 8px;
-            font-size: 12px;
-            margin: 2px;
-        }
-        .stats {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin: 10px 0;
-            font-size: 14px;
-            color: #555;
-        }
-        .stats span {
-            background: #ecf0f1;
-            padding: 4px 12px;
-            border-radius: 20px;
-        }
-        body.dark .stats span {
-            background: #2a3a5a;
-            color: #e0e0e0;
-        }
-        .progress-bar {
-            background: #ecf0f1;
-            height: 6px;
-            border-radius: 3px;
-            margin: 10px 0;
-        }
-        .progress-bar .fill {
-            height: 100%;
-            background: #3498db;
-            width: 0%;
-            border-radius: 3px;
-            transition: width 0.3s;
-        }
-        body.dark .progress-bar {
-            background: #2a3a5a;
-        }
-        .question-item {
-            background: #fafbfc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            transition: background 0.3s, border-color 0.3s;
-        }
-        .question-item .q-actions {
-            position: absolute;
-            top: 8px;
-            right: 10px;
-            display: flex;
-            gap: 4px;
-            z-index: 1;
-        }
-        .q-title {
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 6px;
-        }
-        body.dark .q-title {
-            color: #e0e0e0;
-        }
-        .q-type {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            color: white;
-            margin-left: 8px;
-        }
-        .type-choice {
-            background: #3498db;
-        }
-        .type-multi {
-            background: #9b59b6;
-        }
-        .type-judge {
-            background: #f39c12;
-        }
-        .type-short {
-            background: #27ae60;
-        }
-        .q-text {
-            margin: 8px 0;
-            word-break: break-word;
-            overflow-wrap: break-word;
-        }
-        .q-text img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 6px 0;
-        }
-        .q-text table {
-            border-collapse: collapse;
-            margin: 10px 0;
-            width: 100%;
-        }
-        .q-text table td,
-        .q-text table th {
-            border: 1px solid #ccc;
-            padding: 6px 10px;
-            text-align: left;
-        }
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin: 8px 0;
-            width: 100%;
-        }
-        .options label {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 4px;
-            word-break: break-word;
-            overflow-wrap: break-word;
-            white-space: normal;
-            max-width: 100%;
-            width: 100%;
-            flex-wrap: wrap;
-            transition: background 0.2s;
-        }
-        .options label:hover {
-            background: #eaf2f8;
-        }
-        .options input[type="radio"],
-        .options input[type="checkbox"] {
-            flex-shrink: 0;
-            margin-top: 2px;
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-        .options label .option-text {
-            flex: 1;
-            min-width: 0;
-            word-break: break-word;
-            overflow-wrap: break-word;
-        }
-        .options label .option-text img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 4px 0;
-        }
-        .answer-area {
-            margin-top: 10px;
-            padding: 10px;
-            background: #f0f9ff;
-            border-radius: 6px;
-            border-left: 4px solid #3498db;
-            display: none;
-            transition: display 0.2s;
-        }
-        .answer-area .answer {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-        .answer-area .analysis {
-            color: #2c3e50;
-            margin-top: 4px;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-        .answer-area .analysis img {
-            max-width: 100%;
-            height: auto;
-        }
-        body.dark .answer-area {
-            background: #1a2a3a;
-            border-left-color: #4a7a9a;
-        }
-        body.dark .answer-area .analysis {
-            color: #c0c0c0;
-        }
-        .short-input {
-            width: 100%;
-            min-height: 120px;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-top: 8px;
-            font-size: 14px;
-            resize: vertical;
-        }
-        body.dark .short-input {
-            background: #1e2a4a;
-            border-color: #3a4a6b;
-            color: #e0e0e0;
-        }
-        .edit-btn,
-        .show-answer-btn {
-            margin-top: 8px;
-            margin-right: 8px;
-            padding: 4px 12px;
-            border: none;
-            border-radius: 4px;
-            background: #95a5a6;
-            color: white;
-            cursor: pointer;
-            font-size: 12px;
-            transition: background 0.2s;
-        }
-        .edit-btn:hover,
-        .show-answer-btn:hover {
-            background: #7f8c8d;
-        }
-        .edit-area {
-            margin-top: 8px;
-            display: none;
-        }
-        .edit-area input,
-        .edit-area .editable-div {
-            width: 100%;
-            padding: 4px;
-            border: 1px solid #3498db;
-            border-radius: 4px;
-            font-size: 13px;
-        }
-        .edit-area .editable-div {
-            min-height: 60px;
-            background: white;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-        .edit-area .editable-div img {
-            max-width: 100%;
-        }
-        .edit-area .save-btn {
-            margin-top: 4px;
-            padding: 4px 16px;
-            background: #27ae60;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .edit-area .save-btn:hover {
-            background: #1e8449;
-        }
-        .footer {
-            margin-top: 20px;
-            text-align: center;
-            color: #888;
-        }
-        .tag {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            color: white;
-            margin-left: 5px;
-        }
-        .tag-wrong {
-            background: #e74c3c;
-        }
-        .tag-correct {
-            background: #27ae60;
-        }
-        .section-title {
-            margin: 25px 0 15px 0;
-            padding: 8px 15px;
-            background: #eaf2f8;
-            border-radius: 6px;
-            font-weight: bold;
-            color: #2c3e50;
-            border-left: 4px solid #3498db;
-        }
-        body.dark .section-title {
-            background: #1a2a3a;
-            border-left-color: #4a7a9a;
-            color: #e0e0e0;
-        }
-        .library-area {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-            background: #f8f9fa;
-            transition: background 0.3s, border-color 0.3s;
-        }
-        body.dark .library-area {
-            background: #1a2a3a;
-            border-color: #2a3a5a;
-        }
-        .library-area .area-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            user-select: none;
-        }
-        .library-area .area-header h3 {
-            margin: 0;
-        }
-        .library-area .area-header .toggle-icon {
-            font-size: 18px;
-            transition: transform 0.3s;
-        }
-        .library-area .area-header .toggle-icon.collapsed {
-            transform: rotate(-90deg);
-        }
-        .library-area .area-body {
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            max-height: 2000px;
-        }
-        .library-area .area-body.collapsed {
-            max-height: 0;
-            padding: 0;
-        }
-        .library-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        .library-item {
-            background: #fff;
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-            transition: background 0.2s, border-color 0.2s;
-        }
-        .library-item:hover {
-            border-color: #3498db;
-            background: #eaf2f8;
-        }
-        .library-item.active {
-            border-color: #3498db;
-            background: #d4e6f1;
-            font-weight: bold;
-        }
-        body.dark .library-item {
-            background: #1e2a4a;
-            border-color: #2a3a5a;
-        }
-        body.dark .library-item:hover {
-            border-color: #4a7a9a;
-            background: #2a3a5a;
-        }
-        body.dark .library-item.active {
-            border-color: #4a7a9a;
-            background: #2a4a6a;
-        }
-        .library-item .lib-name {
-            cursor: pointer;
-        }
-        .library-item .lib-actions {
-            display: flex;
-            gap: 4px;
-        }
-        .library-item .lib-actions span {
-            cursor: pointer;
-            font-size: 14px;
-            color: #555;
-            padding: 0 4px;
-        }
-        .library-item .lib-actions span:hover {
-            color: #000;
-        }
-        .library-item .lib-checkbox {
-            margin-right: 6px;
-            cursor: pointer;
-            display: none;
-        }
-        .library-item .lib-checkbox.show {
-            display: inline-block;
-        }
-        .upload-form {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-            margin-top: 10px;
-        }
-        .upload-form input[type="file"] {
-            display: none;
-        }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-box {
-            background: #fff;
-            padding: 25px;
-            border-radius: 12px;
-            max-width: 700px;
-            width: 95%;
-            max-height: 90%;
-            overflow-y: auto;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            transition: background 0.3s;
-        }
-        body.dark .modal-box {
-            background: #16213e;
-        }
-        .modal-box h3 {
-            margin-bottom: 15px;
-        }
-        .modal-box .modal-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        .modal-box .modal-buttons button {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        .modal-box .modal-buttons .confirm-btn {
-            background: #3498db;
-            color: white;
-        }
-        .modal-box .modal-buttons .cancel-btn {
-            background: #95a5a6;
-            color: white;
-        }
-        .modal-box .modal-buttons .confirm-btn:hover {
-            background: #217dbb;
-        }
-        .modal-box .modal-buttons .cancel-btn:hover {
-            background: #7f8c8d;
-        }
-        .modal-box .form-group {
-            margin-bottom: 12px;
-        }
-        .modal-box .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-        .modal-box .form-group input,
-        .modal-box .form-group select,
-        .modal-box .form-group .editable-div {
-            width: 100%;
-            padding: 6px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .modal-box .form-group .editable-div {
-            min-height: 60px;
-            background: white;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-        .modal-box .form-group .editable-div img {
-            max-width: 100%;
-        }
-        .modal-box .form-group textarea {
-            width: 100%;
-            padding: 6px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            min-height: 60px;
-            resize: vertical;
-        }
-        .modal-box .radio-group {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .modal-box .radio-group label {
-            font-weight: normal;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-        }
-        .report-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .report-content {
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            max-width: 800px;
-            width: 90%;
-            max-height: 80%;
-            overflow-y: auto;
-            position: relative;
-        }
-        body.dark .report-content {
-            background: #16213e;
-        }
-        .report-close {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 28px;
-            cursor: pointer;
-            color: #888;
-        }
-        .report-close:hover {
-            color: #000;
-        }
-        .report-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 15px 0;
-        }
-        .report-stat-item {
-            background: #ecf0f1;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        body.dark .report-stat-item {
-            background: #2a3a5a;
-        }
-        .report-stat-item .num {
-            font-size: 28px;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-        body.dark .report-stat-item .num {
-            color: #e0e0e0;
-        }
-        .report-stat-item .label {
-            font-size: 14px;
-            color: #555;
-        }
-        .wrong-list-item {
-            padding: 5px 0;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-        }
-        .wrong-list-item:hover {
-            background: #f0f9ff;
-        }
-        body.dark .wrong-list-item {
-            border-bottom-color: #2a3a5a;
-        }
-        body.dark .wrong-list-item:hover {
-            background: #1a2a3a;
-        }
-        .debug-area {
-            margin: 10px 0;
-            padding: 10px;
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            max-height: 300px;
-            overflow-y: auto;
-            display: none;
-            font-size: 13px;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-        .debug-area pre {
-            margin: 0;
-            font-size: 12px;
-            white-space: pre-wrap;
-        }
-        .floating-buttons {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 999;
-        }
-        .floating-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: none;
-            background: #3498db;
-            color: #fff;
-            font-size: 18px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-        }
-        .floating-btn:hover {
-            transform: scale(1.1);
-            background: #217dbb;
-        }
-        .floating-btn:active {
-            transform: scale(0.95);
-        }
-        .floating-btn.jump-btn {
-            background: #27ae60;
-        }
-        .floating-btn.jump-btn:hover {
-            background: #1e8449;
-        }
+        body.dark h1 { color: #e0e0e0; border-bottom-color: #4a7a9a; }
+
+        /* ---- 其他样式（与之前完全一致） ---- */
+        /* 以下为原有样式（已精简，但功能完整） */
+        .btn { padding: 6px 14px; border: none; border-radius: 6px; cursor: pointer; }
+        .btn-sm { padding: 3px 8px; font-size: 12px; }
+        .btn-success { background: #27ae60; color: #fff; }
+        .btn-warning { background: #f39c12; color: #fff; }
+        .btn-danger { background: #e74c3c; color: #fff; }
+        .btn-secondary { background: #95a5a6; color: #fff; }
+        .btn-primary { background: #2a7ab0; color: #fff; }
+        .stats { display: flex; gap: 12px; flex-wrap: wrap; margin: 10px 0; font-size: 14px; color: #555; }
+        .stats span { background: #ecf0f1; padding: 4px 12px; border-radius: 20px; }
+        body.dark .stats span { background: #2a3a5a; color: #e0e0e0; }
+        .progress-bar { background: #ecf0f1; height: 6px; border-radius: 3px; margin: 10px 0; }
+        .progress-bar .fill { height: 100%; background: #3498db; width: 0%; border-radius: 3px; transition: width 0.3s; }
+        body.dark .progress-bar { background: #2a3a5a; }
+        .question-item { background: #fafbfc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 15px; position: relative; }
+        .question-item .q-actions { position: absolute; top: 8px; right: 10px; display: flex; gap: 4px; z-index: 1; }
+        .q-title { font-weight: bold; color: #2c3e50; margin-bottom: 6px; }
+        body.dark .q-title { color: #e0e0e0; }
+        .q-type { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; color: #fff; margin-left: 8px; }
+        .type-choice { background: #3498db; }
+        .type-multi { background: #9b59b6; }
+        .type-judge { background: #f39c12; }
+        .type-short { background: #27ae60; }
+        .q-text { margin: 8px 0; word-break: break-word; }
+        .q-text img { max-width: 100%; height: auto; display: block; margin: 6px 0; }
+        .options { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+        .options label { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; padding: 4px 8px; border-radius: 4px; }
+        .options label:hover { background: #eaf2f8; }
+        .options input[type="radio"], .options input[type="checkbox"] { flex-shrink: 0; margin-top: 2px; width: 16px; height: 16px; cursor: pointer; }
+        .answer-area { margin-top: 10px; padding: 10px; background: #f0f9ff; border-radius: 6px; border-left: 4px solid #3498db; display: none; }
+        .answer-area .answer { color: #e74c3c; font-weight: bold; }
+        .answer-area .analysis { color: #2c3e50; margin-top: 4px; white-space: pre-wrap; }
+        body.dark .answer-area { background: #1a2a3a; border-left-color: #4a7a9a; }
+        body.dark .answer-area .analysis { color: #c0c0c0; }
+        .short-input { width: 100%; min-height: 120px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-top: 8px; font-size: 14px; resize: vertical; }
+        body.dark .short-input { background: #1e2a4a; border-color: #3a4a6b; color: #e0e0e0; }
+        .show-answer-btn { margin-top: 8px; padding: 4px 12px; border: none; border-radius: 4px; background: #95a5a6; color: #fff; cursor: pointer; font-size: 12px; }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; color: #fff; margin-left: 5px; }
+        .tag-wrong { background: #e74c3c; }
+        .tag-correct { background: #27ae60; }
+        .section-title { margin: 25px 0 15px 0; padding: 8px 15px; background: #eaf2f8; border-radius: 6px; font-weight: bold; color: #2c3e50; border-left: 4px solid #3498db; }
+        body.dark .section-title { background: #1a2a3a; border-left-color: #4a7a9a; color: #e0e0e0; }
+        .library-area { border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin: 15px 0; background: #f8f9fa; }
+        body.dark .library-area { background: #1a2a3a; border-color: #2a3a5a; }
+        .library-area .area-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+        .library-area .area-header .toggle-icon { font-size: 18px; transition: transform 0.3s; }
+        .library-area .area-header .toggle-icon.collapsed { transform: rotate(-90deg); }
+        .library-area .area-body { overflow: hidden; transition: max-height 0.3s ease; max-height: 2000px; }
+        .library-area .area-body.collapsed { max-height: 0; padding: 0; }
+        .library-list { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
+        .library-item { background: #fff; padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .library-item:hover { border-color: #3498db; background: #eaf2f8; }
+        .library-item.active { border-color: #3498db; background: #d4e6f1; font-weight: bold; }
+        body.dark .library-item { background: #1e2a4a; border-color: #2a3a5a; }
+        body.dark .library-item:hover { border-color: #4a7a9a; background: #2a3a5a; }
+        body.dark .library-item.active { border-color: #4a7a9a; background: #2a4a6a; }
+        .library-item .lib-name { cursor: pointer; }
+        .library-item .lib-actions { display: flex; gap: 4px; }
+        .library-item .lib-actions span { cursor: pointer; font-size: 14px; color: #555; padding: 0 4px; }
+        .library-item .lib-actions span:hover { color: #000; }
+        .library-item .lib-checkbox { display: none; }
+        .library-item .lib-checkbox.show { display: inline-block; }
+        .upload-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+        .upload-form input[type="file"] { display: none; }
+        .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0; align-items: center; }
+        .filter-bar input, .filter-bar select { padding: 6px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; background: #fff; }
+        body.dark .filter-bar input, body.dark .filter-bar select { background: #1e2a4a; border-color: #3a4a6b; color: #e0e0e0; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-box { background: #fff; padding: 25px; border-radius: 12px; max-width: 700px; width: 95%; max-height: 90%; overflow-y: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        body.dark .modal-box { background: #16213e; }
+        .modal-box .modal-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
+        .modal-box .modal-buttons button { padding: 8px 20px; border: none; border-radius: 6px; cursor: pointer; }
+        .modal-box .modal-buttons .confirm-btn { background: #3498db; color: #fff; }
+        .modal-box .modal-buttons .cancel-btn { background: #95a5a6; color: #fff; }
+        .modal-box .form-group { margin-bottom: 12px; }
+        .modal-box .form-group label { display: block; font-weight: bold; margin-bottom: 4px; }
+        .modal-box .form-group input, .modal-box .form-group select, .modal-box .form-group .editable-div { width: 100%; padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; }
+        .modal-box .form-group .editable-div { min-height: 60px; background: #fff; overflow-y: auto; white-space: pre-wrap; word-break: break-word; }
+        .modal-box .radio-group { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+        .report-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .report-content { background: #fff; padding: 30px; border-radius: 12px; max-width: 800px; width: 90%; max-height: 80%; overflow-y: auto; position: relative; }
+        body.dark .report-content { background: #16213e; }
+        .report-close { position: absolute; top: 10px; right: 20px; font-size: 28px; cursor: pointer; color: #888; }
+        .report-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 15px; margin: 15px 0; }
+        .report-stat-item { background: #ecf0f1; padding: 15px; border-radius: 8px; text-align: center; }
+        body.dark .report-stat-item { background: #2a3a5a; }
+        .report-stat-item .num { font-size: 28px; font-weight: bold; color: #2c3e50; }
+        body.dark .report-stat-item .num { color: #e0e0e0; }
+        .report-stat-item .label { font-size: 14px; color: #555; }
+        .wrong-list-item { padding: 5px 0; border-bottom: 1px solid #eee; cursor: pointer; }
+        .wrong-list-item:hover { background: #f0f9ff; }
+        body.dark .wrong-list-item { border-bottom-color: #2a3a5a; }
+        .debug-area { margin: 10px 0; padding: 10px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 6px; max-height: 300px; overflow-y: auto; display: none; font-size: 13px; white-space: pre-wrap; }
+        .debug-area pre { margin: 0; font-size: 12px; white-space: pre-wrap; }
+        .floating-buttons { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 10px; z-index: 999; }
+        .floating-btn { width: 44px; height: 44px; border-radius: 50%; border: none; background: #3498db; color: #fff; font-size: 18px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; }
+        .floating-btn:hover { transform: scale(1.1); background: #217dbb; }
+        .floating-btn.jump-btn { background: #27ae60; }
+        .floating-btn.jump-btn:hover { background: #1e8449; }
+        .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
+        .toast { padding: 12px 24px; background: #333; color: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); font-size: 14px; opacity: 0; transform: translateY(-20px); transition: opacity 0.3s, transform 0.3s; pointer-events: auto; max-width: 90%; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.info { background: #3498db; }
+        .toast.success { background: #27ae60; }
+        .toast.warning { background: #f39c12; }
+        .toast.error { background: #e74c3c; }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 9998; backdrop-filter: blur(4px); }
+        .loading-spinner { width: 60px; height: 60px; border: 6px solid #eee; border-top: 6px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .footer { margin-top: 20px; text-align: center; color: #888; }
+        .batch-count { font-size: 13px; color: #e74c3c; margin-left: 8px; display: none; }
+        .batch-count.show { display: inline; }
+        .img-placeholder { color: #999; font-size: 14px; display: inline-block; padding: 4px 8px; background: #f5f5f5; border-radius: 4px; }
         @media (max-width: 768px) {
-            .floating-buttons {
-                bottom: 20px;
-                right: 20px;
-                gap: 8px;
-            }
-            .floating-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-            }
-        }
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            pointer-events: none;
-        }
-        .toast {
-            padding: 12px 24px;
-            background: #333;
-            color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            font-size: 14px;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: opacity 0.3s, transform 0.3s;
-            pointer-events: auto;
-            max-width: 90%;
-        }
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .toast.info {
-            background: #3498db;
-        }
-        .toast.success {
-            background: #27ae60;
-        }
-        .toast.warning {
-            background: #f39c12;
-        }
-        .toast.error {
-            background: #e74c3c;
-        }
-        body.dark .toast {
-            background: #2a3a5a;
-        }
-        body.dark .toast.info {
-            background: #1a4a6a;
-        }
-        body.dark .toast.success {
-            background: #1b6b3a;
-        }
-        body.dark .toast.warning {
-            background: #b8860b;
-        }
-        body.dark .toast.error {
-            background: #8b1a1a;
-        }
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9998;
-            backdrop-filter: blur(4px);
-        }
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 6px solid #eee;
-            border-top: 6px solid #3498db;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            h1 {
-                font-size: 1.2rem;
-            }
-            .toolbar .btn {
-                font-size: 12px;
-                padding: 5px 10px;
-            }
-            .stats {
-                font-size: 12px;
-                gap: 8px;
-            }
-            .stats span {
-                padding: 3px 8px;
-            }
-            .library-item {
-                padding: 4px 8px;
-                font-size: 13px;
-            }
-            .modal-box {
-                padding: 18px;
-            }
-            .question-item {
-                padding: 12px;
-            }
-            .q-title {
-                font-size: 14px;
-            }
-            .q-text {
-                font-size: 14px;
-            }
-            .options label {
-                font-size: 14px;
-            }
-            .short-input {
-                min-height: 100px;
-                font-size: 14px;
-            }
-            .answer-area {
-                font-size: 14px;
-            }
-            .report-content {
-                padding: 20px;
-            }
-            .floating-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-            }
-            body {
-                touch-action: manipulation;
-            }
+            body { padding-top: 90px; }
+            .toolbar-fixed { max-height: 90px; padding: 4px 8px; gap: 4px; }
+            .toolbar-fixed .btn { font-size: 11px; padding: 3px 6px; }
+            .toolbar-fixed .position-indicator, .toolbar-fixed .rate-display { font-size: 11px; padding: 1px 6px; }
+            .container { padding: 10px; }
+            h1 { font-size: 1.2rem; }
         }
         @media (max-width: 480px) {
-            .toolbar {
-                gap: 5px;
-            }
-            .toolbar .btn {
-                font-size: 11px;
-                padding: 4px 8px;
-            }
-            .stats span {
-                font-size: 11px;
-                padding: 2px 6px;
-            }
-            .library-item {
-                font-size: 12px;
-                padding: 3px 6px;
-            }
-            .q-title {
-                font-size: 13px;
-            }
-            .q-text {
-                font-size: 13px;
-            }
-        }
-        .filter-bar {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 10px 0;
-            align-items: center;
-        }
-        .filter-bar input,
-        .filter-bar select {
-            padding: 6px 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
-            background: #fff;
-            transition: border-color 0.3s, background 0.3s, color 0.3s;
-        }
-        body.dark .filter-bar input,
-        body.dark .filter-bar select {
-            background: #1e2a4a;
-            border-color: #3a4a6b;
-            color: #e0e0e0;
-        }
-        .filter-bar input:focus,
-        .filter-bar select:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-        .position-indicator {
-            font-size: 14px;
-            color: #555;
-            padding: 4px 10px;
-            background: #ecf0f1;
-            border-radius: 20px;
-            white-space: nowrap;
-        }
-        body.dark .position-indicator {
-            background: #2a3a5a;
-            color: #e0e0e0;
-        }
-        .batch-count {
-            font-size: 13px;
-            color: #e74c3c;
-            margin-left: 8px;
-            display: none;
-        }
-        .batch-count.show {
-            display: inline;
-        }
-        .img-placeholder {
-            color: #999;
-            font-size: 14px;
-            display: inline-block;
-            padding: 4px 8px;
-            background: #f5f5f5;
-            border-radius: 4px;
+            body { padding-top: 105px; }
+            .toolbar-fixed { max-height: 105px; }
         }
     </style>
 </head>
 <body>
+    <!-- ===== 固定工具栏 ===== -->
+    <div class="toolbar-fixed" id="fixedToolbar">
+        <button class="btn btn-primary" onclick="toggleMode()">🔄 错题模式</button>
+        <button class="btn btn-success" onclick="saveProgressToCloud()">💾 保存进度</button>
+        <button class="btn btn-success" onclick="showReport()">📊 报告</button>
+        <button class="btn btn-warning" onclick="exportCurrentProgress()">⬇️ 导出进度</button>
+        <button class="btn btn-secondary" onclick="toggleDarkMode()" id="darkModeBtn">🌙 暗黑</button>
+
+        <span class="position-indicator" id="positionIndicatorFixed">当前第 0 / 0 题</span>
+        <span class="rate-display" id="rateDisplayFixed">正确率：0%</span>
+
+        <span class="spacer"></span>
+
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('importFile').click()">📂 导入进度</button>
+        <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importProgress(event)">
+        <button class="btn btn-danger btn-sm" onclick="resetCurrent()">🗑️ 重置</button>
+        <button class="btn btn-secondary btn-sm" onclick="exportAllLibraries()">📦 导出题库</button>
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('importAllBtn').click()">📂 导入题库</button>
+        <input type="file" id="importAllBtn" accept=".json" style="display:none;" onchange="importAllLibraries(event)">
+        <button class="btn btn-success btn-sm" onclick="openAddQuestion()">➕ 添加</button>
+        <button class="btn btn-secondary btn-sm" onclick="setImgbbApiKey()">🔑 图床</button>
+        <button class="btn btn-danger btn-sm" id="redoWrongBtn" style="display:none;" onclick="redoWrongQuestions()">🔄 重做错题</button>
+
+        <!-- 云端相关 -->
+        <button class="btn btn-secondary btn-sm" onclick="showSupabaseConfigModal()">☁️ 配置</button>
+        <button class="btn btn-secondary btn-sm" onclick="uploadAllLibraries()">📤 上传全部</button>
+        <button class="btn btn-secondary btn-sm" onclick="downloadAllLibraries()">📥 下载全部</button>
+        <span class="cloud-time" id="cloudLastSync">上次同步：--</span>
+    </div>
+
+    <!-- ===== 主体 ===== -->
     <div class="container">
         <h1><span>📚 刷题系统</span><span style="font-size:16px;font-weight:normal;" id="modeLabel">全部题目</span></h1>
-        <div class="toolbar" id="toolbar">
-            <button class="btn" onclick="toggleMode()">🔄 错题模式</button>
-            <button class="btn btn-success" onclick="showReport()">📊 刷题报告</button>
-            <button class="btn btn-warning" onclick="exportCurrentProgress()">⬇️ 导出进度</button>
-            <button class="btn btn-warning" onclick="document.getElementById('importFile').click()">📂 导入进度</button>
-            <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importProgress(event)">
-            <button class="btn btn-danger" onclick="resetCurrent()">🗑️ 重置进度</button>
-            <button class="btn btn-secondary" onclick="exportAllLibraries()">📦 导出所有题库</button>
-            <button class="btn btn-secondary" onclick="document.getElementById('importAllBtn').click()">📂 导入所有题库</button>
-            <input type="file" id="importAllBtn" accept=".json" style="display:none;" onchange="importAllLibraries(event)">
-            <button class="btn btn-success" onclick="openAddQuestion()">➕ 添加题目</button>
-            <button class="btn btn-secondary" onclick="toggleDarkMode()" id="darkModeBtn">🌙 暗黑模式</button>
-            <button class="btn btn-secondary" onclick="setImgbbApiKey()">🔑 图床设置</button>
-            <button class="btn btn-danger" id="redoWrongBtn" style="display:none;" onclick="redoWrongQuestions()">🔄 重做错题</button>
-            <span class="position-indicator" id="positionIndicator">当前第 0 / 0 题</span>
-        </div>
+
         <div class="filter-bar">
             <select id="chapterFilter" onchange="applyFilters()"><option value="all">📂 全部章节</option></select>
             <input type="text" id="searchInput" placeholder="🔍 搜索题目..." oninput="applyFilters()">
             <span style="font-size:13px;color:#888;" id="filterResultCount"></span>
         </div>
+
         <div class="library-area">
             <div class="area-header" onclick="toggleLibraryArea()">
                 <h3>📂 题库管理</h3>
@@ -1102,6 +330,7 @@
                 <div class="debug-area" id="debugArea"><pre id="debugContent">等待调试信息...</pre></div>
             </div>
         </div>
+
         <div class="stats">
             <span id="totalQ">总题：0</span>
             <span id="doneQ">已答：0</span>
@@ -1110,13 +339,12 @@
             <span id="wrongQ">错题：0</span>
         </div>
         <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+
         <div id="questionContainer"></div>
         <div class="footer">💡 点击"显示答案"查看；点击"✎"编辑题目，"✕"删除题目。编辑区域支持粘贴图片。</div>
     </div>
-    <div class="floating-buttons">
-        <button class="floating-btn" onclick="scrollToTop()" title="回到顶部">⬆</button>
-        <button class="floating-btn jump-btn" onclick="jumpToQuestionInput()" title="跳转题目">🔢</button>
-    </div>
+
+    <!-- ===== 模态框 ===== -->
     <div class="modal-overlay" id="confirmModal"><div class="modal-box"><h3 id="confirmTitle">提示</h3><p id="confirmMessage"></p><div class="modal-buttons"><button class="cancel-btn" onclick="closeConfirm(false)">取消</button><button class="confirm-btn" onclick="closeConfirm(true)">确定</button></div></div></div>
     <div class="modal-overlay" id="alertModal"><div class="modal-box"><h3>提示</h3><p id="alertMessage"></p><div class="modal-buttons"><button class="confirm-btn" onclick="closeAlert()">确定</button></div></div></div>
     <div class="modal-overlay" id="questionModal">
@@ -1124,10 +352,10 @@
             <h3 id="qModalTitle">编辑题目</h3>
             <div class="form-group"><label>题号（自动）</label><input type="number" id="qId" readonly style="background:#eee;"></div>
             <div class="form-group"><label>题型</label><select id="qType" onchange="toggleOptions()"><option value="choice">单选题</option><option value="multi">多选题</option><option value="judge">判断题</option><option value="short">简答题</option></select></div>
-            <div class="form-group"><label>章节（如：第一章 一、单项选择题）</label><input type="text" id="qChapter" placeholder="章节名称"></div>
+            <div class="form-group"><label>章节</label><input type="text" id="qChapter" placeholder="章节名称"></div>
             <div class="form-group"><label>题目内容（支持粘贴图片）</label><div id="qQuestionDiv" class="editable-div" contenteditable="true" style="min-height:80px;border:1px solid #ccc;padding:6px;border-radius:4px;background:white;" placeholder="请输入题目"></div></div>
-            <div class="form-group" id="optionsGroup"><label>选项（每行一个，支持图片）</label><div id="qOptionsDiv" class="editable-div" contenteditable="true" style="min-height:80px;border:1px solid #ccc;padding:6px;border-radius:4px;background:white;" placeholder="A. 选项1\nB. 选项2\nC. 选项3\nD. 选项4"></div></div>
-            <div class="form-group"><label>答案（多选用分号分隔，如 A;B;C）</label><input type="text" id="qAnswer" placeholder="例如：A 或 正确 或 A;B;C"></div>
+            <div class="form-group" id="optionsGroup"><label>选项（每行一个）</label><div id="qOptionsDiv" class="editable-div" contenteditable="true" style="min-height:80px;border:1px solid #ccc;padding:6px;border-radius:4px;background:white;" placeholder="A. 选项1\nB. 选项2\nC. 选项3\nD. 选项4"></div></div>
+            <div class="form-group"><label>答案（多选用分号分隔）</label><input type="text" id="qAnswer" placeholder="例如：A 或 正确 或 A;B;C"></div>
             <div class="form-group"><label>解析（支持粘贴图片）</label><div id="qAnalysisDiv" class="editable-div" contenteditable="true" style="min-height:60px;border:1px solid #ccc;padding:6px;border-radius:4px;background:white;" placeholder="解析内容"></div></div>
             <div class="modal-buttons"><button class="cancel-btn" onclick="closeQuestionModal()">取消</button><button class="confirm-btn" onclick="saveQuestion()">保存</button></div>
         </div>
@@ -1135,7 +363,7 @@
     <div class="modal-overlay" id="apiKeyModal">
         <div class="modal-box">
             <h3>🔑 设置 ImgBB API Key</h3>
-            <p style="margin-bottom:12px;">请输入你的 ImgBB API Key（可在 <a href="https://api.imgbb.com/" target="_blank">https://api.imgbb.com/</a> 获取）</p>
+            <p>请输入你的 ImgBB API Key（可在 <a href="https://api.imgbb.com/" target="_blank">https://api.imgbb.com/</a> 获取）</p>
             <div class="form-group">
                 <label>API Key</label>
                 <input type="text" id="apiKeyInput" placeholder="粘贴你的 API Key..." style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;">
@@ -1167,6 +395,12 @@
     <div class="report-modal" id="reportModal"><div class="report-content"><span class="report-close" onclick="closeReport()">&times;</span><h2>📊 刷题报告</h2><div id="reportBody"></div></div></div>
     <div class="toast-container" id="toastContainer"></div>
     <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
+
+    <!-- ===== 浮动按钮 ===== -->
+    <div class="floating-buttons">
+        <button class="floating-btn" onclick="scrollToTop()" title="回到顶部">⬆</button>
+        <button class="floating-btn jump-btn" onclick="jumpToQuestionInput()" title="跳转题目">🔢</button>
+    </div>
 
     <script>
         // ============================================================
@@ -1210,26 +444,15 @@
         const pasteHandlers = new WeakMap();
         let imgbbApiKey = '';
 
-        // ============================================================
-        // 数据版本控制（增量同步核心）
-        // ============================================================
-        let dataVersion = {
-            userAnswers: 0,
-            modifiedData: 0,
-            questions: 0,
-            wrongQuestions: 0
-        };
+        // 版本控制（增量）
+        let dataVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
         let lastSyncedVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
 
         function loadDataVersion() {
             const saved = safeGetStorage('shuati_dataVersion');
-            if (saved) {
-                try { dataVersion = JSON.parse(saved); } catch (e) {}
-            }
+            if (saved) { try { dataVersion = JSON.parse(saved); } catch (e) {} }
             const synced = safeGetStorage('shuati_lastSyncedVersion');
-            if (synced) {
-                try { lastSyncedVersion = JSON.parse(synced); } catch (e) {}
-            }
+            if (synced) { try { lastSyncedVersion = JSON.parse(synced); } catch (e) {} }
         }
 
         function saveDataVersion() {
@@ -1254,7 +477,6 @@
         }
 
         function showLoading() { document.getElementById('loadingOverlay').style.display = 'flex'; }
-
         function hideLoading() { document.getElementById('loadingOverlay').style.display = 'none'; }
 
         function safeGetStorage(key, fallback) {
@@ -1434,17 +656,12 @@
                 confirmResolve = null; }
         }
 
-        function closeAlert() {
-            document.getElementById('alertModal').style.display = 'none';
-        }
-
-        function showAlert(message) {
-            document.getElementById('alertMessage').textContent = message;
-            document.getElementById('alertModal').style.display = 'flex';
-        }
+        function closeAlert() { document.getElementById('alertModal').style.display = 'none'; }
+        function showAlert(message) { document.getElementById('alertMessage').textContent = message;
+            document.getElementById('alertModal').style.display = 'flex'; }
 
         // ============================================================
-        // 5. 题目增删改
+        // 5. 题目增删改（自动同步云端）
         // ============================================================
         function toggleOptions() {
             document.getElementById('optionsGroup').style.display = (document.getElementById('qType').value === 'short') ?
@@ -1529,6 +746,7 @@
                     delete modifiedData[id];
                     delete userAnswers[id];
                     dataVersion.questions++;
+                    dataVersion.modifiedData++;
                     saveDataVersion();
                 }
             } else {
@@ -1540,7 +758,8 @@
             saveCurrentLibrary();
             closeQuestionModal();
             render();
-            showToast('保存成功！', 'success');
+            syncCurrentLibraryToCloud().catch(e => console.warn('自动同步失败:', e));
+            showToast('保存成功并已同步云端！', 'success');
         }
 
         function deleteQuestion(id) {
@@ -1555,15 +774,16 @@
                     saveDataVersion();
                     saveCurrentLibrary();
                     render();
-                    showToast('已删除', 'info');
+                    syncCurrentLibraryToCloud().catch(e => console.warn('自动同步失败:', e));
+                    showToast('已删除并同步云端', 'info');
                 }
             });
         }
 
         // ============================================================
-        // 6. 重命名 & 批量删除
+        // 6. 重命名 & 批量删除（含云端同步）
         // ============================================================
-        function renameLibrary(oldName) {
+        async function renameLibrary(oldName) {
             if (event && event.stopPropagation) event.stopPropagation();
             const newName = prompt('请输入新的题库名称：', oldName);
             if (newName === null) return;
@@ -1571,13 +791,49 @@
             if (!trimmed) { showToast('名称不能为空', 'error'); return; }
             if (trimmed === oldName) return;
             if (libraries[trimmed]) { showToast('名称 "' + trimmed + '" 已存在，请换一个', 'error'); return; }
+
+            if (supabaseConfig.url && supabaseConfig.anonKey) {
+                showLoading();
+                try {
+                    const checkUrl =
+                        `${supabaseConfig.url}/rest/v1/shuati_user_data?select=id&user_id=eq.default_user&library_name=eq.${encodeURIComponent(oldName)}`;
+                    const headers = {
+                        'apikey': supabaseConfig.anonKey,
+                        'Authorization': `Bearer ${supabaseConfig.anonKey}`
+                    };
+                    const checkRes = await fetch(checkUrl, { headers });
+                    if (checkRes.ok) {
+                        const existing = await checkRes.json();
+                        if (existing && existing.length > 0) {
+                            const id = existing[0].id;
+                            const patchUrl = `${supabaseConfig.url}/rest/v1/shuati_user_data?id=eq.${id}`;
+                            const patchBody = { library_name: trimmed };
+                            const patchRes = await fetch(patchUrl, {
+                                method: 'PATCH',
+                                headers: { ...headers, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+                                body: JSON.stringify(patchBody)
+                            });
+                            if (!patchRes.ok) {
+                                const errText = await patchRes.text();
+                                throw new Error(`云端更新失败: ${errText}`);
+                            }
+                        }
+                    }
+                } catch (err) {
+                    showToast('云端重命名失败：' + err.message, 'error', 4000);
+                    console.error(err);
+                    hideLoading();
+                    return;
+                } finally { hideLoading(); }
+            }
+
             libraries[trimmed] = libraries[oldName];
             delete libraries[oldName];
             if (currentLibrary === oldName) currentLibrary = trimmed;
             saveLibraries();
             renderLibraryList();
             render();
-            showToast('已重命名为：' + trimmed, 'success');
+            showToast('已重命名为：' + trimmed + (supabaseConfig.url ? '（已同步云端）' : ''), 'success');
         }
 
         function toggleBatchDeleteMode() {
@@ -1606,36 +862,52 @@
             updateBatchCount();
         }
 
-        function confirmBatchDelete() {
+        async function confirmBatchDelete() {
             const checkboxes = document.querySelectorAll('.lib-checkbox:checked');
             const selected = Array.from(checkboxes).map(cb => cb.value);
             if (selected.length === 0) { showToast('请至少选择一个题库', 'warning'); return; }
             const filtered = selected.filter(name => name !== '默认题库');
             if (filtered.length === 0) { showToast('默认题库不可删除', 'warning'); return; }
             const msg = '确定要删除以下题库吗？\n' + filtered.join('\n') + '\n（此操作不可撤销）';
-            showConfirm('批量删除题库', msg).then(ok => {
-                if (!ok) return;
-                let deleted = 0;
-                filtered.forEach(name => {
-                    if (libraries[name]) {
-                        delete libraries[name];
-                        deleted++;
+            const ok = await showConfirm('批量删除题库', msg);
+            if (!ok) return;
+
+            let deleted = 0,
+                failed = 0;
+            for (const name of filtered) {
+                try {
+                    if (supabaseConfig.url && supabaseConfig.anonKey) {
+                        const deleteUrl =
+                            `${supabaseConfig.url}/rest/v1/shuati_user_data?user_id=eq.default_user&library_name=eq.${encodeURIComponent(name)}`;
+                        const headers = {
+                            'apikey': supabaseConfig.anonKey,
+                            'Authorization': `Bearer ${supabaseConfig.anonKey}`
+                        };
+                        const delRes = await fetch(deleteUrl, { method: 'DELETE', headers });
+                        if (!delRes.ok && delRes.status !== 404) {
+                            const errText = await delRes.text();
+                            throw new Error(`云端删除失败: ${errText}`);
+                        }
                     }
-                });
-                if (!libraries[currentLibrary]) {
-                    currentLibrary = '默认题库';
-                    if (!libraries[currentLibrary]) {
-                        libraries['默认题库'] = { questions: [], userAnswers: {}, modifiedData: {},
-                            wrongQuestions: new Set() };
-                    }
+                    delete libraries[name];
+                    deleted++;
+                } catch (err) {
+                    console.warn(`删除 ${name} 失败:`, err);
+                    failed++;
                 }
-                saveLibraries();
-                loadCurrentLibrary();
-                render();
-                renderLibraryList();
-                if (batchDeleteMode) toggleBatchDeleteMode();
-                showToast('成功删除 ' + deleted + ' 个题库', 'success');
-            });
+            }
+            if (!libraries[currentLibrary]) {
+                currentLibrary = '默认题库';
+                if (!libraries[currentLibrary]) {
+                    libraries['默认题库'] = { questions: [], userAnswers: {}, modifiedData: {}, wrongQuestions: new Set() };
+                }
+            }
+            saveLibraries();
+            loadCurrentLibrary();
+            render();
+            renderLibraryList();
+            if (batchDeleteMode) toggleBatchDeleteMode();
+            showToast(`成功删除 ${deleted} 个题库${failed > 0 ? `，${failed} 个失败` : ''}`, deleted > 0 ? 'success' : 'warning');
         }
 
         // ============================================================
@@ -1646,7 +918,7 @@
             if (container) scrollPos = window.scrollY;
             doRender();
             requestAnimationFrame(() => { window.scrollTo(0, scrollPos); });
-            updatePosition();
+            updatePositionAndRate();
         }
 
         function doRender() {
@@ -1655,7 +927,7 @@
             if (!allQuestions || allQuestions.length === 0) {
                 container.innerHTML = '<div style="padding:20px;text-align:center;color:#e74c3c;">⚠️ 当前题库为空，请上传题库或添加题目。</div>';
                 document.getElementById('totalQ').textContent = '总题：0';
-                updatePosition();
+                updatePositionAndRate();
                 return;
             }
             allQuestions.forEach(q => {
@@ -1697,7 +969,7 @@
 
             if (displayQuestions.length === 0) {
                 container.innerHTML = '<div style="padding:40px;text-align:center;color:#27ae60;">🎉 当前筛选条件下没有题目</div>';
-                updatePosition();
+                updatePositionAndRate();
                 return;
             }
 
@@ -1869,7 +1141,7 @@
                 div.appendChild(btnDiv);
                 container.appendChild(div);
             });
-            updatePosition();
+            updatePositionAndRate();
         }
 
         function updateStatsOnly() {
@@ -1890,6 +1162,9 @@
             const rate = done ? Math.round((correct / done) * 100) : 0;
             document.getElementById('rate').textContent = '正确率：' + rate + '%';
             document.getElementById('progressFill').style.width = total ? ((done / total) * 100) + '%' : '0%';
+            // 同步更新固定工具栏的正确率
+            const rateDisplay = document.getElementById('rateDisplayFixed');
+            if (rateDisplay) rateDisplay.textContent = '正确率：' + rate + '%';
         }
 
         function recalcWrong() {
@@ -1931,7 +1206,8 @@
                 wrongQuestions.clear();
                 saveCurrentLibrary();
                 render();
-                showToast('已重置 ' + toRemove.size + ' 道错题', 'success');
+                syncCurrentLibraryToCloud().catch(e => console.warn('自动同步失败:', e));
+                showToast('已重置 ' + toRemove.size + ' 道错题并同步云端', 'success');
             });
         }
 
@@ -1968,36 +1244,56 @@
             }, 100);
         }
 
-        function updatePosition() {
+        function updatePositionAndRate() {
+            // 更新位置指示器（两个地方）
             const indicator = document.getElementById('positionIndicator');
+            const fixedIndicator = document.getElementById('positionIndicatorFixed');
             const items = document.querySelectorAll('.question-item');
             let current = 0,
                 total = items.length;
-            if (total === 0) { indicator.textContent = '当前第 0 / 0 题'; return; }
+            if (total === 0) {
+                const text = '当前第 0 / 0 题';
+                if (indicator) indicator.textContent = text;
+                if (fixedIndicator) fixedIndicator.textContent = text;
+                return;
+            }
             let found = false;
+            const topOffset = 80; // 固定工具栏高度
             items.forEach((item, index) => {
                 const rect = item.getBoundingClientRect();
-                if (rect.top >= 0 && !found) { current = index + 1;
-                    found = true; }
+                if (rect.top >= topOffset && !found) {
+                    current = index + 1;
+                    found = true;
+                }
             });
             if (!found) current = total;
-            indicator.textContent = '当前第 ' + current + ' / ' + total + ' 题';
+            const text = '当前第 ' + current + ' / ' + total + ' 题';
+            if (indicator) indicator.textContent = text;
+            if (fixedIndicator) fixedIndicator.textContent = text;
+
+            // 更新正确率（固定工具栏）
+            const rateSpan = document.getElementById('rate');
+            const rateDisplay = document.getElementById('rateDisplayFixed');
+            if (rateSpan && rateDisplay) {
+                rateDisplay.textContent = rateSpan.textContent;
+            }
         }
+
         window.addEventListener('scroll', function() {
             if (scrollTimer) clearTimeout(scrollTimer);
-            scrollTimer = setTimeout(updatePosition, 100);
+            scrollTimer = setTimeout(updatePositionAndRate, 100);
         });
 
         function toggleDarkMode() {
             darkMode = !darkMode;
             document.body.classList.toggle('dark', darkMode);
-            document.getElementById('darkModeBtn').textContent = darkMode ? '☀️ 明亮模式' : '🌙 暗黑模式';
+            document.getElementById('darkModeBtn').textContent = darkMode ? '☀️ 明亮' : '🌙 暗黑';
             safeSetStorage('darkMode', darkMode ? 'true' : 'false');
         }
         if (safeGetStorage('darkMode') === 'true') {
             darkMode = true;
             document.body.classList.add('dark');
-            document.getElementById('darkModeBtn').textContent = '☀️ 明亮模式';
+            document.getElementById('darkModeBtn').textContent = '☀️ 明亮';
         }
 
         // ============================================================
@@ -2110,7 +1406,8 @@
                     });
                     saveCurrentLibrary();
                     render();
-                    showToast('进度导入成功！', 'success');
+                    syncCurrentLibraryToCloud().catch(e => console.warn('同步失败:', e));
+                    showToast('进度导入成功并已同步云端！', 'success');
                 } catch (err) { showToast('导入失败：' + err.message, 'error'); }
             };
             reader.readAsText(file);
@@ -2128,11 +1425,12 @@
             saveDataVersion();
             saveCurrentLibrary();
             render();
-            showToast('已重置当前题库！', 'success');
+            syncCurrentLibraryToCloud().catch(e => console.warn('同步失败:', e));
+            showToast('已重置当前题库并同步云端！', 'success');
         }
 
         // ============================================================
-        // 10. 切换题库 & 删除题库
+        // 10. 切换题库 & 删除题库（单删）
         // ============================================================
         function switchLibrary(name) {
             if (name === currentLibrary) return;
@@ -2148,13 +1446,36 @@
             if (name === '默认题库') { showToast('不能删除默认题库！', 'error'); return; }
             const confirmed = await showConfirm('删除题库', '确定要删除题库 "' + name + '" 吗？此操作不可撤销！');
             if (!confirmed) return;
+
+            if (supabaseConfig.url && supabaseConfig.anonKey) {
+                showLoading();
+                try {
+                    const deleteUrl =
+                        `${supabaseConfig.url}/rest/v1/shuati_user_data?user_id=eq.default_user&library_name=eq.${encodeURIComponent(name)}`;
+                    const headers = {
+                        'apikey': supabaseConfig.anonKey,
+                        'Authorization': `Bearer ${supabaseConfig.anonKey}`
+                    };
+                    const delRes = await fetch(deleteUrl, { method: 'DELETE', headers });
+                    if (!delRes.ok && delRes.status !== 404) {
+                        const errText = await delRes.text();
+                        throw new Error(`云端删除失败: ${errText}`);
+                    }
+                } catch (err) {
+                    showToast('云端删除失败：' + err.message, 'error', 4000);
+                    console.error(err);
+                    hideLoading();
+                    return;
+                } finally { hideLoading(); }
+            }
+
             delete libraries[name];
             if (currentLibrary === name) { currentLibrary = '默认题库';
                 loadCurrentLibrary(); }
             saveLibraries();
             renderLibraryList();
             render();
-            showToast('已删除：' + name, 'info');
+            showToast('已删除：' + name + (supabaseConfig.url ? '（已同步云端）' : ''), 'info');
         }
 
         // ============================================================
@@ -2202,7 +1523,7 @@
         }
 
         // ============================================================
-        // 12. 上传 TXT / Word
+        // 12. 上传 TXT / Word（自动同步云端）
         // ============================================================
         function dataURItoBlob(dataURI) {
             const byteString = atob(dataURI.split(',')[1]);
@@ -2221,16 +1542,12 @@
                 reader.onload = function(e) {
                     const img = new Image();
                     img.onload = function() {
-                        let width = img.width;
-                        let height = img.height;
-                        if (width > maxWidth) {
-                            height = height * (maxWidth / width);
-                            width = maxWidth;
-                        }
-                        if (height > maxHeight) {
-                            width = width * (maxHeight / height);
-                            height = maxHeight;
-                        }
+                        let width = img.width,
+                            height = img.height;
+                        if (width > maxWidth) { height = height * (maxWidth / width);
+                            width = maxWidth; }
+                        if (height > maxHeight) { width = width * (maxHeight / height);
+                            height = maxHeight; }
                         const canvas = document.createElement('canvas');
                         canvas.width = Math.round(width);
                         canvas.height = Math.round(height);
@@ -2238,9 +1555,7 @@
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                         const mimeType = blob.type === 'image/png' ? 'image/png' : 'image/jpeg';
                         const q = blob.type === 'image/png' ? 1.0 : quality;
-                        canvas.toBlob(function(blobResult) {
-                            resolve(blobResult);
-                        }, mimeType, q);
+                        canvas.toBlob(function(blobResult) { resolve(blobResult); }, mimeType, q);
                     };
                     img.src = e.target.result;
                 };
@@ -2252,9 +1567,7 @@
         function blobToBase64(blob) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    resolve(e.target.result);
-                };
+                reader.onload = function(e) { resolve(e.target.result); };
                 reader.onerror = reject;
                 reader.readAsDataURL(blob);
             });
@@ -2271,11 +1584,7 @@
                 body: formData
             });
             const result = await response.json();
-            if (result.success) {
-                return result.data.url;
-            } else {
-                throw new Error(result.error.message || '上传失败');
-            }
+            if (result.success) { return result.data.url; } else { throw new Error(result.error.message || '上传失败'); }
         }
 
         function extractTextWithImages(html) {
@@ -2285,39 +1594,19 @@
             let result = '';
 
             function traverse(node) {
-                if (node.nodeType === Node.TEXT_NODE) {
-                    const text = node.textContent;
-                    if (text) {
-                        result += text;
-                    }
-                    return;
-                }
+                if (node.nodeType === Node.TEXT_NODE) { const text = node.textContent; if (text) result += text; return; }
                 if (node.nodeType === Node.ELEMENT_NODE) {
                     const tag = node.tagName;
-                    if (tag === 'IMG') {
-                        result += node.outerHTML;
-                        return;
-                    }
-                    if (tag === 'TABLE') {
-                        result += node.outerHTML;
-                        return;
-                    }
-                    if (tag === 'BR') {
-                        result += '\n';
-                        return;
-                    }
-                    for (let child of node.childNodes) {
-                        traverse(child);
-                    }
+                    if (tag === 'IMG') { result += node.outerHTML; return; }
+                    if (tag === 'TABLE') { result += node.outerHTML; return; }
+                    if (tag === 'BR') { result += '\n'; return; }
+                    for (let child of node.childNodes) traverse(child);
                     if (['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI', 'TR'].includes(tag)) {
                         const lastChar = result[result.length - 1];
-                        if (lastChar !== '\n' && lastChar !== ' ') {
-                            result += '\n';
-                        }
+                        if (lastChar !== '\n' && lastChar !== ' ') result += '\n';
                     }
                 }
             }
-
             traverse(body);
             return result;
         }
@@ -2331,9 +1620,7 @@
 
             if (!imgbbApiKey) {
                 const saved = safeGetStorage('imgbbApiKey', '');
-                if (saved) {
-                    imgbbApiKey = saved;
-                } else {
+                if (saved) { imgbbApiKey = saved; } else {
                     showToast('请先设置 ImgBB API Key（点击"🔑 图床设置"）', 'warning', 4000);
                     hideLoading();
                     event.target.value = '';
@@ -2346,11 +1633,9 @@
                     const arrayBuffer = await file.arrayBuffer();
                     const result = await mammoth.convertToHtml({ arrayBuffer });
                     let html = result.value;
-
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
                     const imgs = doc.querySelectorAll('img');
-
                     const uploadPromises = Array.from(imgs).map(async (img) => {
                         const src = img.getAttribute('src');
                         if (src && src.startsWith('data:image')) {
@@ -2359,14 +1644,10 @@
                                 const compressed = await compressImageBlob(blob, 800, 600, 0.8);
                                 const url = await uploadToImgBB(compressed);
                                 img.setAttribute('src', url);
-                            } catch (err) {
-                                console.warn('图片上传失败，保留原始 data URI:', err);
-                            }
+                            } catch (err) { console.warn('图片上传失败，保留原始 data URI:', err); }
                         }
                     });
-
                     await Promise.allSettled(uploadPromises);
-
                     html = doc.body.innerHTML;
                     const text = extractTextWithImages(html);
                     const libName = file.name.replace(/\.[^.]+$/, '');
@@ -2392,18 +1673,22 @@
             setDebugInfo(debugMsg);
             saveLibraries();
             const names = Object.keys(libraries);
-            if (names.length > 0 && !libraries[currentLibrary]) {
-                currentLibrary = names[0];
-            }
+            if (names.length > 0 && !libraries[currentLibrary]) { currentLibrary = names[0]; }
             loadCurrentLibrary();
             render();
             renderLibraryList();
             hideLoading();
-            if (successCount > 0) {
-                showToast('成功导入 ' + successCount + ' 个题库。', 'success');
-            } else {
-                showToast('未能成功导入任何题库，请检查文件格式。', 'error');
+            if (successCount > 0 && supabaseConfig.url && supabaseConfig.anonKey) {
+                showLoading();
+                try {
+                    for (const name of Object.keys(libraries)) {
+                        await uploadSingleLibrary(name);
+                    }
+                    showToast('所有新题库已同步云端', 'success');
+                } catch (e) { console.warn('同步失败:', e); } finally { hideLoading(); }
             }
+            if (successCount > 0) { showToast('成功导入 ' + successCount + ' 个题库。', 'success'); } else { showToast(
+                    '未能成功导入任何题库，请检查文件格式。', 'error'); }
             event.target.value = '';
         }
 
@@ -2427,38 +1712,38 @@
                             wrongQuestions: new Set()
                         };
                         successCount++;
-                    } else {
-                        debugMsg += '  警告：未提取到题目，可能格式不正确。\n';
-                    }
-                } catch (err) {
-                    debugMsg += '  错误：' + err.message + '\n';
-                }
+                    } else { debugMsg += '  警告：未提取到题目，可能格式不正确。\n'; }
+                } catch (err) { debugMsg += '  错误：' + err.message + '\n'; }
             }
             setDebugInfo(debugMsg);
             saveLibraries();
             const names = Object.keys(libraries);
-            if (names.length > 0 && !libraries[currentLibrary]) {
-                currentLibrary = names[0];
-            }
+            if (names.length > 0 && !libraries[currentLibrary]) { currentLibrary = names[0]; }
             loadCurrentLibrary();
             render();
             renderLibraryList();
             hideLoading();
-            if (successCount > 0) {
-                showToast('成功导入 ' + successCount + ' 个题库。', 'success');
-            } else {
-                showToast('未能成功导入任何题库，请检查文件格式。', 'error');
+            if (successCount > 0 && supabaseConfig.url && supabaseConfig.anonKey) {
+                showLoading();
+                try {
+                    for (const name of Object.keys(libraries)) {
+                        await uploadSingleLibrary(name);
+                    }
+                    showToast('所有新题库已同步云端', 'success');
+                } catch (e) { console.warn('同步失败:', e); } finally { hideLoading(); }
             }
+            if (successCount > 0) { showToast('成功导入 ' + successCount + ' 个题库。', 'success'); } else { showToast(
+                    '未能成功导入任何题库，请检查文件格式。', 'error'); }
             event.target.value = '';
         }
 
         // ============================================================
-        // 13. 示例加载
+        // 13. 示例加载（自动同步云端）
         // ============================================================
         function loadSample() {
             const libName = '示例题库';
             if (libraries[libName]) {
-                showConfirm('覆盖', '示例题库已存在，是否覆盖？').then((overwrite) => {
+                showConfirm('覆盖', '示例题库已存在，是否覆盖？').then(async (overwrite) => {
                     if (overwrite) {
                         libraries[libName] = {
                             questions: JSON.parse(JSON.stringify(sampleQuestions)),
@@ -2471,7 +1756,10 @@
                         loadCurrentLibrary();
                         render();
                         renderLibraryList();
-                        showToast('示例题库已更新！', 'success');
+                        if (supabaseConfig.url && supabaseConfig.anonKey) {
+                            await uploadSingleLibrary(libName);
+                        }
+                        showToast('示例题库已更新并同步云端！', 'success');
                     }
                 });
             } else {
@@ -2486,6 +1774,9 @@
                 loadCurrentLibrary();
                 render();
                 renderLibraryList();
+                if (supabaseConfig.url && supabaseConfig.anonKey) {
+                    uploadSingleLibrary(libName).catch(e => console.warn('同步失败:', e));
+                }
                 showToast('示例题库加载完成！共5题。', 'success');
             }
         }
@@ -2516,11 +1807,11 @@
 
             const lines = text.split(/\r?\n/);
             let questions = [];
-            let currentType = '';
-            let currentChapter = '';
-            let questionLines = [];
-            let inQuestion = false;
-            let autoId = 1;
+            let currentType = '',
+                currentChapter = '',
+                questionLines = [];
+            let inQuestion = false,
+                autoId = 1;
 
             function flushQuestion() {
                 if (!inQuestion || questionLines.length === 0) return;
@@ -2533,9 +1824,7 @@
                     qId = parseInt(idMatch[1]);
                     autoId = qId + 1;
                     block = block.replace(/^\d+\.\s*/, '').trim();
-                } else {
-                    qId = autoId++;
-                }
+                } else { qId = autoId++; }
 
                 let answer = '',
                     analysis = '';
@@ -2563,9 +1852,7 @@
                                 if (answer === '正确' || answer === '对') answer = 'A';
                                 else if (answer === '错误' || answer === '错') answer = 'B';
                             }
-                        } else {
-                            answer = raw;
-                        }
+                        } else { answer = raw; }
                         block = block.replace(/【答案】\s*[\s\S]*?(?=\s*解析[：:]|$)/, '');
                     }
                 }
@@ -2603,10 +1890,7 @@
 
             for (let line of lines) {
                 line = line.trim();
-                if (!line) {
-                    if (inQuestion) questionLines.push(line);
-                    continue;
-                }
+                if (!line) { if (inQuestion) questionLines.push(line); continue; }
                 const typeInfo = detectType(line);
                 if (typeInfo) {
                     flushQuestion();
@@ -2622,12 +1906,8 @@
                     inQuestion = true;
                     questionLines = [line];
                 } else {
-                    if (!inQuestion && currentType) {
-                        inQuestion = true;
-                        questionLines = [line];
-                    } else if (inQuestion) {
-                        questionLines.push(line);
-                    }
+                    if (!inQuestion && currentType) { inQuestion = true;
+                        questionLines = [line]; } else if (inQuestion) { questionLines.push(line); }
                 }
             }
             flushQuestion();
@@ -2657,7 +1937,7 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     if (data.libraries) {
-                        showConfirm('导入所有题库', '将覆盖当前所有题库，确定继续？').then((ok) => {
+                        showConfirm('导入所有题库', '将覆盖当前所有题库，确定继续？').then(async (ok) => {
                             if (ok) {
                                 libraries = {};
                                 for (let name in data.libraries) {
@@ -2676,8 +1956,16 @@
                                 loadCurrentLibrary();
                                 render();
                                 renderLibraryList();
-                                showToast('导入成功！共 ' + Object.keys(libraries).length + ' 个题库。',
-                                'success');
+                                if (supabaseConfig.url && supabaseConfig.anonKey) {
+                                    showLoading();
+                                    try {
+                                        for (const name of Object.keys(libraries)) {
+                                            await uploadSingleLibrary(name);
+                                        }
+                                        showToast('所有题库已同步云端', 'success');
+                                    } catch (e) { console.warn('同步失败:', e); } finally { hideLoading(); }
+                                }
+                                showToast('导入成功！共 ' + Object.keys(libraries).length + ' 个题库。', 'success');
                             }
                         });
                     } else { showToast('无效的文件格式', 'error'); }
@@ -2712,9 +2000,7 @@
             }
         }
 
-        function setDebugInfo(msg) {
-            document.getElementById('debugContent').textContent = msg;
-        }
+        function setDebugInfo(msg) { document.getElementById('debugContent').textContent = msg; }
 
         // ============================================================
         // 17. 图床相关
@@ -2725,17 +2011,12 @@
             document.getElementById('apiKeyModal').style.display = 'flex';
         }
 
-        function closeApiKeyModal() {
-            document.getElementById('apiKeyModal').style.display = 'none';
-        }
+        function closeApiKeyModal() { document.getElementById('apiKeyModal').style.display = 'none'; }
 
         function saveApiKey() {
             const input = document.getElementById('apiKeyInput');
             const key = input.value.trim();
-            if (!key) {
-                showToast('API Key 不能为空', 'error');
-                return;
-            }
+            if (!key) { showToast('API Key 不能为空', 'error'); return; }
             imgbbApiKey = key;
             safeSetStorage('imgbbApiKey', key);
             closeApiKeyModal();
@@ -2758,17 +2039,13 @@
                     return;
                 }
             }
-            if (container) {
-                container.appendChild(node);
-            }
+            if (container) { container.appendChild(node); }
         }
 
         async function handleImageBlob(file, element) {
             if (!imgbbApiKey) {
                 const saved = safeGetStorage('imgbbApiKey', '');
-                if (saved) {
-                    imgbbApiKey = saved;
-                } else {
+                if (saved) { imgbbApiKey = saved; } else {
                     showToast('请先设置 ImgBB API Key（点击"🔑 图床设置"）', 'error', 4000);
                     return;
                 }
@@ -2781,9 +2058,7 @@
                 img.style.maxWidth = '100%';
                 insertNodeAtCursor(img, element);
                 showToast('图片上传成功！', 'success', 1500);
-            } catch (error) {
-                showToast('上传失败：' + error.message, 'error', 4000);
-            }
+            } catch (error) { showToast('上传失败：' + error.message, 'error', 4000); }
         }
 
         function bindPasteImage(element) {
@@ -2793,8 +2068,8 @@
             }
             const handler = function(e) {
                 const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-                let imageItem = null;
-                let textItem = null;
+                let imageItem = null,
+                    textItem = null;
 
                 for (let item of items) {
                     if (item.type.match(/^image\/(png|jpeg|gif|webp|bmp)/i)) {
@@ -2824,9 +2099,8 @@
                                         .then(blob => {
                                             handleImageBlob(blob, element);
                                         })
-                                        .catch(err => {
-                                            showToast('提取图片失败：' + err.message, 'error');
-                                        });
+                                        .catch(err => { showToast('提取图片失败：' + err.message,
+                                            'error'); });
                                     found = true;
                                     break;
                                 }
@@ -2846,15 +2120,14 @@
                         });
                         return;
                     }
-                    if (item.type === 'text/plain') {
-                        textItem = item;
-                    }
+                    if (item.type === 'text/plain') { textItem = item; }
                 }
 
                 if (textItem) {
                     e.preventDefault();
                     textItem.getAsString(function(text) {
-                        const urlPattern = /^(https?:\/\/[^\s]+?\.(png|jpg|jpeg|gif|webp|bmp|svg|PNG|JPG|JPEG|GIF|WEBP|BMP|SVG))(\?.*)?$/i;
+                        const urlPattern =
+                            /^(https?:\/\/[^\s]+?\.(png|jpg|jpeg|gif|webp|bmp|svg|PNG|JPG|JPEG|GIF|WEBP|BMP|SVG))(\?.*)?$/i;
                         const trimmed = text.trim();
                         if (urlPattern.test(trimmed)) {
                             const img = document.createElement('img');
@@ -2874,7 +2147,7 @@
         }
 
         // ============================================================
-        // 18. 通用数据打包函数（增量同步用）
+        // 18. 通用数据打包函数
         // ============================================================
         function getSyncDataForLibrary(libName) {
             const lib = libraries[libName];
@@ -2936,7 +2209,7 @@
         }
 
         // ============================================================
-        // 19. Supabase 云端同步模块（增量同步）
+        // 19. Supabase 云端同步模块
         // ============================================================
         let supabaseConfig = { url: '', anonKey: '' };
 
@@ -2960,112 +2233,145 @@
             document.getElementById('supabaseConfigModal').style.display = 'flex';
         }
 
-        function closeSupabaseConfig() {
-            document.getElementById('supabaseConfigModal').style.display = 'none';
-        }
+        function closeSupabaseConfig() { document.getElementById('supabaseConfigModal').style.display = 'none'; }
 
         function saveSupabaseConfigFromModal() {
             const url = document.getElementById('supabaseUrlInput').value.trim();
             const anonKey = document.getElementById('supabaseAnonInput').value.trim();
-            if (!url || !anonKey) {
-                showToast('URL 和 Key 都不能为空', 'error');
-                return;
-            }
+            if (!url || !anonKey) { showToast('URL 和 Key 都不能为空', 'error'); return; }
             saveSupabaseConfig(url, anonKey);
             closeSupabaseConfig();
         }
 
-        // ---- 增量上传 ----
-        async function uploadToSupabase() {
-            if (!supabaseConfig.url || !supabaseConfig.anonKey) {
-                showToast('请先配置 Supabase（点击 "☁️ Supabase配置"）', 'warning');
-                return;
+        // ---- 单题库上传 ----
+        async function uploadSingleLibrary(libName) {
+            if (!supabaseConfig.url || !supabaseConfig.anonKey) return;
+            const lib = libraries[libName];
+            if (!lib) return;
+            const fullData = getSyncDataForLibrary(libName);
+            const headers = {
+                'apikey': supabaseConfig.anonKey,
+                'Authorization': `Bearer ${supabaseConfig.anonKey}`
+            };
+            const body = {
+                user_id: 'default_user',
+                library_name: libName,
+                data: fullData,
+                updated_at: new Date().toISOString()
+            };
+
+            const checkUrl =
+                `${supabaseConfig.url}/rest/v1/shuati_user_data?select=id&user_id=eq.default_user&library_name=eq.${encodeURIComponent(libName)}`;
+            const checkRes = await fetch(checkUrl, { headers });
+            if (!checkRes.ok) {
+                const errText = await checkRes.text();
+                throw new Error(`查询失败: ${errText}`);
             }
+            const existing = await checkRes.json();
 
-            // 检查是否有变更
-            const hasAnswerChanges = dataVersion.userAnswers > lastSyncedVersion.userAnswers;
-            const hasModifiedChanges = dataVersion.modifiedData > lastSyncedVersion.modifiedData;
-            const hasQuestionChanges = dataVersion.questions > lastSyncedVersion.questions;
-            const hasWrongChanges = dataVersion.wrongQuestions > lastSyncedVersion.wrongQuestions;
-
-            if (!hasAnswerChanges && !hasModifiedChanges && !hasQuestionChanges && !hasWrongChanges) {
-                showToast('没有需要同步的变更', 'info');
-                return;
-            }
-
-            showLoading();
-            try {
-                const libName = currentLibrary || '默认题库';
-                const lib = libraries[libName];
-                if (!lib) {
-                    showToast('当前题库为空，无需同步', 'warning');
-                    return;
-                }
-
-                // 构建增量数据
-                const deltaData = {
-                    version: '1.0',
-                    timestamp: new Date().toISOString(),
-                    currentLibrary: libName,
-                    libraryAreaCollapsed: libraryAreaCollapsed,
-                    delta: {
-                        userAnswers: hasAnswerChanges ? userAnswers : null,
-                        modifiedData: hasModifiedChanges ? modifiedData : null,
-                        wrongQuestions: hasWrongChanges ? Array.from(wrongQuestions) : null,
-                        questions: hasQuestionChanges ? allQuestions : null
-                    },
-                    syncedVersion: { ...dataVersion }
-                };
-
-                const url = `${supabaseConfig.url}/rest/v1/shuati_user_data?on_conflict=user_id,library_name`;
-                const headers = {
-                    'Content-Type': 'application/json',
-                    'apikey': supabaseConfig.anonKey,
-                    'Authorization': `Bearer ${supabaseConfig.anonKey}`
-                };
-                const body = {
-                    user_id: 'default_user',
-                    library_name: libName,
-                    data: deltaData,
-                    updated_at: new Date().toISOString()
-                };
-
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: headers,
+            let response;
+            const baseUrl = `${supabaseConfig.url}/rest/v1/shuati_user_data`;
+            if (existing && existing.length > 0) {
+                const id = existing[0].id;
+                const patchUrl = `${baseUrl}?id=eq.${id}`;
+                response = await fetch(patchUrl, {
+                    method: 'PATCH',
+                    headers: { ...headers, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
                     body: JSON.stringify(body)
                 });
-
-                if (!response.ok) {
-                    const errText = await response.text();
-                    throw new Error(`HTTP ${response.status}: ${errText}`);
-                }
-
-                // 更新已同步版本号
-                lastSyncedVersion = { ...dataVersion };
-                saveDataVersion();
-
-                showToast('☁️ 增量数据已同步到 Supabase！', 'success');
-                document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
-            } catch (err) {
-                showToast('上传失败：' + err.message, 'error', 4000);
-                console.error(err);
-            } finally {
-                hideLoading();
+            } else {
+                response = await fetch(baseUrl, {
+                    method: 'POST',
+                    headers: { ...headers, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+                    body: JSON.stringify(body)
+                });
+            }
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error(`HTTP ${response.status}: ${errText}`);
             }
         }
 
-        // ---- 下载（合并增量数据） ----
-        async function downloadFromSupabase() {
+        // ---- 同步当前题库到云端 ----
+        async function syncCurrentLibraryToCloud() {
+            if (!supabaseConfig.url || !supabaseConfig.anonKey) return;
+            const libName = currentLibrary;
+            if (!libraries[libName]) return;
+            try {
+                await uploadSingleLibrary(libName);
+                dataVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
+                lastSyncedVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
+                saveDataVersion();
+            } catch (e) { console.warn('同步失败:', e); }
+        }
+
+        // ---- 保存答题进度 ----
+        async function saveProgressToCloud() {
             if (!supabaseConfig.url || !supabaseConfig.anonKey) {
                 showToast('请先配置 Supabase', 'warning');
                 return;
             }
             showLoading();
-            let remoteData = null;
             try {
                 const libName = currentLibrary || '默认题库';
-                const url = `${supabaseConfig.url}/rest/v1/shuati_user_data?select=data&user_id=eq.default_user&library_name=eq.${encodeURIComponent(libName)}`;
+                await uploadSingleLibrary(libName);
+                dataVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
+                lastSyncedVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
+                saveDataVersion();
+                showToast('💾 答题进度已保存到云端！', 'success');
+                document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
+            } catch (err) {
+                showToast('保存失败：' + err.message, 'error', 4000);
+                console.error(err);
+            } finally { hideLoading(); }
+        }
+
+        // ---- 全量上传所有题库 ----
+        async function uploadAllLibraries() {
+            if (!supabaseConfig.url || !supabaseConfig.anonKey) {
+                showToast('请先配置 Supabase', 'warning');
+                return;
+            }
+            const libNames = Object.keys(libraries);
+            if (libNames.length === 0) { showToast('没有题库可上传', 'info'); return; }
+
+            showLoading();
+            let successCount = 0,
+                failCount = 0;
+            try {
+                const tasks = libNames.map((libName) => {
+                    return async () => {
+                        try { await uploadSingleLibrary(libName); return true; } catch (err) { console.warn(
+                                `上传 ${libName} 失败:`, err.message); return false; }
+                    };
+                });
+                const results = await runWithConcurrency(tasks, 3);
+                successCount = results.filter(r => r === true).length;
+                failCount = results.length - successCount;
+                if (successCount > 0) {
+                    dataVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
+                    lastSyncedVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
+                    saveDataVersion();
+                    showToast(`✅ 成功上传 ${successCount} 个题库${failCount > 0 ? `，${failCount} 个失败` : ''}`, successCount > 0 ?
+                        'success' : 'warning');
+                    document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
+                } else { showToast('所有题库上传失败，请检查网络或配置', 'error'); }
+            } catch (err) { showToast('上传失败：' + err.message, 'error');
+                console.error(err); } finally { hideLoading(); }
+        }
+
+        // ---- 全量下载所有题库 ----
+        async function downloadAllLibraries() {
+            if (!supabaseConfig.url || !supabaseConfig.anonKey) {
+                showToast('请先配置 Supabase', 'warning');
+                return;
+            }
+
+            showLoading();
+            let result = null;
+            try {
+                const url =
+                    `${supabaseConfig.url}/rest/v1/shuati_user_data?select=data,library_name&user_id=eq.default_user`;
                 const headers = {
                     'apikey': supabaseConfig.anonKey,
                     'Authorization': `Bearer ${supabaseConfig.anonKey}`
@@ -3075,87 +2381,68 @@
                     const errText = await response.text();
                     throw new Error(`HTTP ${response.status}: ${errText}`);
                 }
-                const result = await response.json();
-                if (!result || result.length === 0) {
-                    showToast('云端暂无数据，请先上传', 'warning');
-                    return;
-                }
-                const row = result[0];
-                if (!row.data) {
-                    showToast('云端数据格式异常', 'error');
-                    return;
-                }
-                remoteData = row.data;
+                result = await response.json();
+                if (!result || result.length === 0) { showToast('云端暂无数据，请先上传', 'warning'); return; }
             } catch (err) {
                 showToast('下载失败：' + err.message, 'error', 4000);
                 console.error(err);
                 return;
-            } finally {
-                hideLoading();
-            }
+            } finally { hideLoading(); }
 
-            // 询问用户是否恢复
-            const confirm = await showConfirm('从云端恢复', '将用云端数据覆盖当前题库，确定继续吗？');
+            const confirm = await showConfirm('全量下载', `将用云端数据覆盖本地所有 ${result.length} 个题库，确定继续吗？`);
             if (!confirm) return;
 
             showLoading();
             try {
-                const libName = currentLibrary || '默认题库';
-                const deltaData = remoteData;
-
-                // 如果是增量数据格式
-                if (deltaData.delta) {
-                    // 合并增量数据
-                    if (!libraries[libName]) {
-                        libraries[libName] = { questions: [], userAnswers: {}, modifiedData: {}, wrongQuestions: new Set() };
+                let newLibraries = {};
+                let firstData = null;
+                for (const row of result) {
+                    const libName = row.library_name;
+                    const rowData = row.data;
+                    if (!rowData) continue;
+                    if (rowData.libraries && rowData.libraries[libName]) {
+                        const remoteLib = rowData.libraries[libName];
+                        newLibraries[libName] = {
+                            questions: remoteLib.questions || [],
+                            userAnswers: remoteLib.userAnswers || {},
+                            modifiedData: remoteLib.modifiedData || {},
+                            wrongQuestions: new Set(remoteLib.wrongQuestions || [])
+                        };
+                        if (!firstData) firstData = rowData;
+                    } else if (rowData.delta) {
+                        if (!newLibraries[libName]) {
+                            newLibraries[libName] = { questions: [], userAnswers: {}, modifiedData: {},
+                                wrongQuestions: new Set() };
+                        }
+                        if (rowData.delta.questions) newLibraries[libName].questions = rowData.delta.questions;
+                        if (rowData.delta.userAnswers) newLibraries[libName].userAnswers = rowData.delta.userAnswers;
+                        if (rowData.delta.modifiedData) newLibraries[libName].modifiedData = rowData.delta
+                        .modifiedData;
+                        if (rowData.delta.wrongQuestions) newLibraries[libName].wrongQuestions = new Set(rowData.delta
+                            .wrongQuestions);
+                        if (!firstData) firstData = rowData;
                     }
-
-                    // 合并题目（如果有）
-                    if (deltaData.delta.questions) {
-                        libraries[libName].questions = deltaData.delta.questions;
-                    }
-
-                    // 合并答案
-                    if (deltaData.delta.userAnswers) {
-                        libraries[libName].userAnswers = deltaData.delta.userAnswers;
-                    }
-
-                    // 合并修改数据
-                    if (deltaData.delta.modifiedData) {
-                        libraries[libName].modifiedData = deltaData.delta.modifiedData;
-                    }
-
-                    // 合并错题
-                    if (deltaData.delta.wrongQuestions) {
-                        libraries[libName].wrongQuestions = new Set(deltaData.delta.wrongQuestions);
-                    }
-
-                    // 更新折叠状态
-                    if (deltaData.libraryAreaCollapsed !== undefined) {
-                        libraryAreaCollapsed = deltaData.libraryAreaCollapsed;
-                    }
-
-                    // 更新已同步版本号（从云端获取最新版本）
-                    if (deltaData.syncedVersion) {
-                        lastSyncedVersion = { ...deltaData.syncedVersion };
-                        saveDataVersion();
-                    }
-                } else {
-                    // 旧版完整数据格式
-                    applySyncDataForLibrary(libName, deltaData);
-                    // 重置版本号（因为是完整覆盖）
-                    dataVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
-                    lastSyncedVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
-                    saveDataVersion();
                 }
 
-                // 重新加载当前题库
-                loadCurrentLibrary();
+                libraries = newLibraries;
+                if (firstData) {
+                    if (firstData.currentLibrary && libraries[firstData.currentLibrary]) {
+                        currentLibrary = firstData.currentLibrary;
+                    } else { currentLibrary = Object.keys(libraries)[0] || '默认题库'; }
+                    if (firstData.libraryAreaCollapsed !== undefined) {
+                        libraryAreaCollapsed = firstData.libraryAreaCollapsed;
+                    }
+                }
+
+                dataVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
+                lastSyncedVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
+                saveDataVersion();
+
                 saveLibraries();
+                loadCurrentLibrary();
                 render();
                 renderLibraryList();
 
-                // 恢复折叠状态
                 const body = document.getElementById('libraryAreaBody');
                 const icon = document.getElementById('libraryToggleIcon');
                 if (libraryAreaCollapsed) {
@@ -3166,34 +2453,20 @@
                     icon.classList.remove('collapsed');
                 }
 
-                showToast('☁️ 数据已从云端恢复', 'success');
+                showToast(`☁️ 已从云端恢复 ${Object.keys(libraries).length} 个题库`, 'success');
                 document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
             } catch (err) {
                 showToast('应用数据失败：' + err.message, 'error');
                 console.error(err);
-            } finally {
-                hideLoading();
-            }
+            } finally { hideLoading(); }
         }
 
-        // ---- 自动同步 ----
-        let autoSyncEnabled = true;
-        let isFirstLoad = true;
-
-        function loadAutoSyncSetting() {
-            const val = safeGetStorage('supabase_autoSync', 'true');
-            autoSyncEnabled = (val === 'true');
-            const toggle = document.getElementById('autoSyncToggle');
-            if (toggle) toggle.checked = autoSyncEnabled;
-        }
-        loadAutoSyncSetting();
-
+        // ---- 自动下载（页面加载时） ----
         async function autoDownloadOnLoad() {
-            if (!autoSyncEnabled || !supabaseConfig.url || !supabaseConfig.anonKey || !isFirstLoad) return;
-            isFirstLoad = false;
+            if (!supabaseConfig.url || !supabaseConfig.anonKey) return;
             try {
-                const libName = currentLibrary || '默认题库';
-                const url = `${supabaseConfig.url}/rest/v1/shuati_user_data?select=data&user_id=eq.default_user&library_name=eq.${encodeURIComponent(libName)}`;
+                const url =
+                    `${supabaseConfig.url}/rest/v1/shuati_user_data?select=data,library_name&user_id=eq.default_user`;
                 const headers = {
                     'apikey': supabaseConfig.anonKey,
                     'Authorization': `Bearer ${supabaseConfig.anonKey}`
@@ -3204,36 +2477,52 @@
                     return;
                 }
                 const result = await response.json();
-                if (result && result.length > 0 && result[0].data) {
-                    const deltaData = result[0].data;
-                    // 应用数据（不弹窗，静默合并）
-                    if (deltaData.delta) {
-                        const libName2 = currentLibrary || '默认题库';
-                        if (deltaData.delta.questions) {
-                            if (!libraries[libName2]) {
-                                libraries[libName2] = { questions: [], userAnswers: {}, modifiedData: {},
+                if (result && result.length > 0) {
+                    let newLibraries = {};
+                    let firstData = null;
+                    for (const row of result) {
+                        const libName = row.library_name;
+                        const rowData = row.data;
+                        if (!rowData) continue;
+                        if (rowData.libraries && rowData.libraries[libName]) {
+                            const remoteLib = rowData.libraries[libName];
+                            newLibraries[libName] = {
+                                questions: remoteLib.questions || [],
+                                userAnswers: remoteLib.userAnswers || {},
+                                modifiedData: remoteLib.modifiedData || {},
+                                wrongQuestions: new Set(remoteLib.wrongQuestions || [])
+                            };
+                            if (!firstData) firstData = rowData;
+                        } else if (rowData.delta) {
+                            if (!newLibraries[libName]) {
+                                newLibraries[libName] = { questions: [], userAnswers: {}, modifiedData: {},
                                     wrongQuestions: new Set() };
                             }
-                            libraries[libName2].questions = deltaData.delta.questions;
+                            if (rowData.delta.questions) newLibraries[libName].questions = rowData.delta.questions;
+                            if (rowData.delta.userAnswers) newLibraries[libName].userAnswers = rowData.delta
+                            .userAnswers;
+                            if (rowData.delta.modifiedData) newLibraries[libName].modifiedData = rowData.delta
+                                .modifiedData;
+                            if (rowData.delta.wrongQuestions) newLibraries[libName].wrongQuestions = new Set(rowData
+                                .delta.wrongQuestions);
+                            if (!firstData) firstData = rowData;
                         }
-                        if (deltaData.delta.userAnswers) {
-                            libraries[libName2].userAnswers = deltaData.delta.userAnswers;
+                    }
+                    if (Object.keys(newLibraries).length > 0) {
+                        libraries = newLibraries;
+                        if (firstData) {
+                            if (firstData.currentLibrary && libraries[firstData.currentLibrary]) {
+                                currentLibrary = firstData.currentLibrary;
+                            } else { currentLibrary = Object.keys(libraries)[0] || '默认题库'; }
+                            if (firstData.libraryAreaCollapsed !== undefined) {
+                                libraryAreaCollapsed = firstData.libraryAreaCollapsed;
+                            }
                         }
-                        if (deltaData.delta.modifiedData) {
-                            libraries[libName2].modifiedData = deltaData.delta.modifiedData;
-                        }
-                        if (deltaData.delta.wrongQuestions) {
-                            libraries[libName2].wrongQuestions = new Set(deltaData.delta.wrongQuestions);
-                        }
-                        if (deltaData.libraryAreaCollapsed !== undefined) {
-                            libraryAreaCollapsed = deltaData.libraryAreaCollapsed;
-                        }
-                        if (deltaData.syncedVersion) {
-                            lastSyncedVersion = { ...deltaData.syncedVersion };
-                            saveDataVersion();
-                        }
-                        loadCurrentLibrary();
+                        dataVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
+                        lastSyncedVersion = { userAnswers: 0, modifiedData: 0, questions: 0, wrongQuestions: 0 };
+                        saveDataVersion();
                         saveLibraries();
+                        loadCurrentLibrary();
                         render();
                         renderLibraryList();
                         const body = document.getElementById('libraryAreaBody');
@@ -3245,110 +2534,35 @@
                             body.classList.remove('collapsed');
                             icon.classList.remove('collapsed');
                         }
-                        showToast('☁️ 已自动同步当前题库', 'info', 2000);
+                        showToast('☁️ 已自动加载云端数据', 'info', 1500);
                         document.getElementById('cloudLastSync').textContent = '上次同步：' + new Date().toLocaleString();
                     }
                 }
             } catch (e) { console.warn('自动下载失败', e); }
         }
 
-        async function autoUploadOnUnload() {
-            if (!autoSyncEnabled || !supabaseConfig.url || !supabaseConfig.anonKey) return;
-
-            const hasAnswerChanges = dataVersion.userAnswers > lastSyncedVersion.userAnswers;
-            const hasModifiedChanges = dataVersion.modifiedData > lastSyncedVersion.modifiedData;
-            const hasQuestionChanges = dataVersion.questions > lastSyncedVersion.questions;
-            const hasWrongChanges = dataVersion.wrongQuestions > lastSyncedVersion.wrongQuestions;
-
-            if (!hasAnswerChanges && !hasModifiedChanges && !hasQuestionChanges && !hasWrongChanges) return;
-
-            try {
-                const libName = currentLibrary || '默认题库';
-                const deltaData = {
-                    version: '1.0',
-                    timestamp: new Date().toISOString(),
-                    currentLibrary: libName,
-                    libraryAreaCollapsed: libraryAreaCollapsed,
-                    delta: {
-                        userAnswers: hasAnswerChanges ? userAnswers : null,
-                        modifiedData: hasModifiedChanges ? modifiedData : null,
-                        wrongQuestions: hasWrongChanges ? Array.from(wrongQuestions) : null,
-                        questions: hasQuestionChanges ? allQuestions : null
-                    },
-                    syncedVersion: { ...dataVersion }
-                };
-
-                const url = `${supabaseConfig.url}/rest/v1/shuati_user_data?on_conflict=user_id,library_name`;
-                const headers = {
-                    'Content-Type': 'application/json',
-                    'apikey': supabaseConfig.anonKey,
-                    'Authorization': `Bearer ${supabaseConfig.anonKey}`
-                };
-                const body = {
-                    user_id: 'default_user',
-                    library_name: libName,
-                    data: deltaData,
-                    updated_at: new Date().toISOString()
-                };
-                await fetch(url, {
-                    method: 'POST',
-                    headers: headers,
-                    body: JSON.stringify(body),
-                    keepalive: true
-                });
-                console.log('自动上传成功');
-            } catch (e) { console.warn('自动上传失败', e); }
+        // ---- 并发控制 ----
+        async function runWithConcurrency(tasks, concurrency = 3) {
+            const results = [];
+            const executing = [];
+            for (const [index, task] of tasks.entries()) {
+                const p = task().then(result => { results[index] = result; });
+                executing.push(p);
+                if (executing.length >= concurrency) {
+                    await Promise.race(executing);
+                    for (let i = executing.length - 1; i >= 0; i--) {
+                        if (executing[i] && executing[i].isSettled) {
+                            executing.splice(i, 1);
+                        }
+                    }
+                }
+            }
+            await Promise.all(executing);
+            return results;
         }
 
-        // ---- 注入 UI ----
-        function injectSupabaseUI() {
-            const toolbar = document.getElementById('toolbar');
-            if (!toolbar) return;
-
-            const configBtn = document.createElement('button');
-            configBtn.className = 'btn btn-secondary';
-            configBtn.innerHTML = '☁️ Supabase配置';
-            configBtn.onclick = showSupabaseConfigModal;
-            toolbar.appendChild(configBtn);
-
-            const syncGroup = document.createElement('span');
-            syncGroup.style.cssText = 'display:inline-flex;gap:4px;align-items:center;margin-left:4px;flex-wrap:wrap;';
-
-            const uploadBtn = document.createElement('button');
-            uploadBtn.className = 'btn btn-sm btn-success';
-            uploadBtn.textContent = '⬆️ 上传';
-            uploadBtn.onclick = uploadToSupabase;
-            syncGroup.appendChild(uploadBtn);
-
-            const downloadBtn = document.createElement('button');
-            downloadBtn.className = 'btn btn-sm btn-warning';
-            downloadBtn.textContent = '⬇️ 下载';
-            downloadBtn.onclick = downloadFromSupabase;
-            syncGroup.appendChild(downloadBtn);
-
-            const autoLabel = document.createElement('label');
-            autoLabel.style.cssText = 'display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#555;';
-            const autoCheck = document.createElement('input');
-            autoCheck.type = 'checkbox';
-            autoCheck.id = 'autoSyncToggle';
-            autoCheck.checked = autoSyncEnabled;
-            autoCheck.onchange = function() {
-                autoSyncEnabled = this.checked;
-                safeSetStorage('supabase_autoSync', autoSyncEnabled ? 'true' : 'false');
-                showToast(autoSyncEnabled ? '自动同步已开启' : '自动同步已关闭', 'info');
-            };
-            autoLabel.appendChild(autoCheck);
-            autoLabel.appendChild(document.createTextNode('自动同步'));
-            syncGroup.appendChild(autoLabel);
-
-            const timeSpan = document.createElement('span');
-            timeSpan.id = 'cloudLastSync';
-            timeSpan.style.cssText = 'font-size:12px;color:#888;margin-left:4px;';
-            timeSpan.textContent = '上次同步：--';
-            syncGroup.appendChild(timeSpan);
-
-            toolbar.appendChild(syncGroup);
-        }
+        // ---- 注入UI（已直接写在HTML中，无需额外注入） ----
+        // 但需要更新cloudLastSync元素
 
         // ============================================================
         // 20. 初始化
@@ -3372,31 +2586,54 @@
                 }
                 checkStorageUsage();
                 populateChapterFilter();
-                updatePosition();
-                window.addEventListener('resize', updatePosition);
+                updatePositionAndRate();
+                window.addEventListener('resize', updatePositionAndRate);
             }
 
-            // 加载版本号
             loadDataVersion();
-
-            // 加载 Supabase 配置
             loadSupabaseConfig();
-            loadAutoSyncSetting();
-
-            // 注入 UI
-            injectSupabaseUI();
-
-            // 自动下载
-            if (autoSyncEnabled) {
-                setTimeout(autoDownloadOnLoad, 500);
+            setTimeout(autoDownloadOnLoad, 500);
+            // 确保云同步时间显示
+            const timeEl = document.getElementById('cloudLastSync');
+            if (timeEl && supabaseConfig.url && supabaseConfig.anonKey) {
+                // 可显示上次同步时间（从localStorage读取）
+                const lastSync = safeGetStorage('shuati_lastSyncTime');
+                if (lastSync) timeEl.textContent = '上次同步：' + lastSync;
             }
+        };
 
-            // 绑定页面关闭事件
-            window.addEventListener('beforeunload', function() {
-                if (autoSyncEnabled) {
-                    autoUploadOnUnload().catch(() => {});
-                }
-            });
+        // 在保存进度后更新同步时间
+        const origSaveProgress = saveProgressToCloud;
+        saveProgressToCloud = async function() {
+            await origSaveProgress();
+            const timeEl = document.getElementById('cloudLastSync');
+            if (timeEl) {
+                const now = new Date().toLocaleString();
+                timeEl.textContent = '上次同步：' + now;
+                safeSetStorage('shuati_lastSyncTime', now);
+            }
+        };
+
+        // 同样在上传全部/下载全部后更新
+        const origUploadAll = uploadAllLibraries;
+        uploadAllLibraries = async function() {
+            await origUploadAll();
+            const timeEl = document.getElementById('cloudLastSync');
+            if (timeEl) {
+                const now = new Date().toLocaleString();
+                timeEl.textContent = '上次同步：' + now;
+                safeSetStorage('shuati_lastSyncTime', now);
+            }
+        };
+        const origDownloadAll = downloadAllLibraries;
+        downloadAllLibraries = async function() {
+            await origDownloadAll();
+            const timeEl = document.getElementById('cloudLastSync');
+            if (timeEl) {
+                const now = new Date().toLocaleString();
+                timeEl.textContent = '上次同步：' + now;
+                safeSetStorage('shuati_lastSyncTime', now);
+            }
         };
     </script>
 </body>
